@@ -29,12 +29,12 @@ const diaryPages = [
   { quote: "You are my forever and always. I love you! 💕", photo: 21 },
 ];
 
-export const Diary = ({ onUnlock }: DiaryProps) => {
-  const [isLocked, setIsLocked] = useState(true);
+export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps & { isUnlocked?: boolean }) => {
+  const [isLocked, setIsLocked] = useState(!isUnlocked);
   const [password, setPassword] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [shake, setShake] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isUnlocked);
 
   const correctPassword = "11062023";
 
