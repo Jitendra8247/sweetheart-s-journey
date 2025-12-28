@@ -9,7 +9,7 @@ const icons = [Heart, Star, Moon, Sun, Flower2, Music];
 
 interface Card {
   id: number;
-  icon: typeof Heart;
+  iconIndex: number;
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -18,59 +18,70 @@ export const MemoryGame = ({ onComplete }: MemoryGameProps) => {
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
+  const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     initializeGame();
   }, []);
 
   const initializeGame = () => {
-    const gameCards: Card[] = [...icons, ...icons]
-      .map((icon, index) => ({
-        id: index,
-        icon,
-        isFlipped: false,
-        isMatched: false,
-      }))
-      .sort(() => Math.random() - 0.5);
+    const iconIndices = [...Array(6).keys(), ...Array(6).keys()]; // [0,1,2,3,4,5,0,1,2,3,4,5]
+    const shuffled = iconIndices.sort(() => Math.random() - 0.5);
+    
+    const gameCards: Card[] = shuffled.map((iconIndex, position) => ({
+      id: position, // Use position as the unique identifier
+      iconIndex,
+      isFlipped: false,
+      isMatched: false,
+    }));
+    
     setCards(gameCards);
     setFlippedCards([]);
     setMoves(0);
+    setIsChecking(false);
   };
 
-  const handleCardClick = (id: number) => {
+  const handleCardClick = (clickedIndex: number) => {
+    if (isChecking) return;
     if (flippedCards.length === 2) return;
-    if (cards[id].isFlipped || cards[id].isMatched) return;
+    if (cards[clickedIndex].isFlipped || cards[clickedIndex].isMatched) return;
 
     const newCards = [...cards];
-    newCards[id].isFlipped = true;
+    newCards[clickedIndex].isFlipped = true;
     setCards(newCards);
 
-    const newFlipped = [...flippedCards, id];
+    const newFlipped = [...flippedCards, clickedIndex];
     setFlippedCards(newFlipped);
 
     if (newFlipped.length === 2) {
       setMoves(m => m + 1);
+      setIsChecking(true);
+      
       const [first, second] = newFlipped;
       
-      if (cards[first].icon === cards[second].icon) {
+      if (newCards[first].iconIndex === newCards[second].iconIndex) {
+        // Match found!
         setTimeout(() => {
-          const matchedCards = [...cards];
+          const matchedCards = [...newCards];
           matchedCards[first].isMatched = true;
           matchedCards[second].isMatched = true;
           setCards(matchedCards);
           setFlippedCards([]);
+          setIsChecking(false);
 
           if (matchedCards.every(c => c.isMatched)) {
             setTimeout(onComplete, 500);
           }
         }, 500);
       } else {
+        // No match - flip back
         setTimeout(() => {
-          const resetCards = [...cards];
+          const resetCards = [...newCards];
           resetCards[first].isFlipped = false;
           resetCards[second].isFlipped = false;
           setCards(resetCards);
           setFlippedCards([]);
+          setIsChecking(false);
         }, 1000);
       }
     }
@@ -83,29 +94,32 @@ export const MemoryGame = ({ onComplete }: MemoryGameProps) => {
       <p className="text-sm text-primary font-body mb-6">Moves: {moves}</p>
       
       <div className="grid grid-cols-4 gap-3 max-w-xs mx-auto">
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            onClick={() => handleCardClick(card.id)}
-            className={`
-              aspect-square rounded-xl cursor-pointer transition-all duration-300 transform
-              ${card.isFlipped || card.isMatched 
-                ? 'bg-primary rotate-0 scale-100' 
-                : 'bg-card border-2 border-primary/30 hover:border-primary hover:scale-105'
-              }
-              ${card.isMatched ? 'opacity-70' : ''}
-              flex items-center justify-center shadow-card
-            `}
-          >
-            {(card.isFlipped || card.isMatched) && (
-              <card.icon 
-                className="text-primary-foreground" 
-                size={28} 
-                fill="currentColor"
-              />
-            )}
-          </div>
-        ))}
+        {cards.map((card, index) => {
+          const IconComponent = icons[card.iconIndex];
+          return (
+            <div
+              key={card.id}
+              onClick={() => handleCardClick(index)}
+              className={`
+                aspect-square rounded-xl cursor-pointer transition-all duration-300 transform
+                ${card.isFlipped || card.isMatched 
+                  ? 'bg-primary rotate-0 scale-100' 
+                  : 'bg-card border-2 border-primary/30 hover:border-primary hover:scale-105'
+                }
+                ${card.isMatched ? 'opacity-70' : ''}
+                flex items-center justify-center shadow-card
+              `}
+            >
+              {(card.isFlipped || card.isMatched) && (
+                <IconComponent 
+                  className="text-primary-foreground" 
+                  size={28} 
+                  fill="currentColor"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
