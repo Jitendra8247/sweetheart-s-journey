@@ -59,6 +59,7 @@ export const Checkpoint = ({
   const [showGame, setShowGame] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showEnvelope, setShowEnvelope] = useState(false);
+  const [diaryUnlocked, setDiaryUnlocked] = useState(false);
 
   const handleGameComplete = () => {
     setGameCompleted(true);
@@ -72,6 +73,7 @@ export const Checkpoint = ({
   };
 
   const handleDiaryUnlock = () => {
+    setDiaryUnlocked(true);
     onComplete();
   };
 
@@ -110,7 +112,7 @@ export const Checkpoint = ({
         {isSelected && isUnlocked && (
           <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic">
-              <Diary onUnlock={handleDiaryUnlock} />
+              <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
               <button
                 onClick={onSelect}
                 className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
