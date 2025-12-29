@@ -79,6 +79,15 @@ export const Checkpoint = ({
 
   const GameComponent = games[number - 1]?.component;
 
+  // Stone-like checkpoint styling
+  const stoneStyles = `
+    relative flex items-center justify-center
+    transition-all duration-300 transform cursor-pointer
+    border-2 border-foreground/80 rounded-[40%_60%_50%_50%/50%_40%_60%_50%]
+    bg-background shadow-md hover:shadow-lg
+    font-script text-2xl md:text-3xl text-foreground
+  `;
+
   // Checkpoint 10 is special - it's the diary
   if (number === 10) {
     return (
@@ -87,26 +96,19 @@ export const Checkpoint = ({
           onClick={() => isUnlocked && onSelect()}
           disabled={!isUnlocked}
           className={`
-            relative w-16 h-16 rounded-full flex items-center justify-center
-            transition-all duration-300 transform
-            ${isUnlocked 
-              ? isCompleted
-                ? 'bg-coral text-primary-foreground shadow-romantic scale-110'
-                : 'bg-primary text-primary-foreground shadow-romantic hover:scale-110 animate-heartbeat'
-              : 'bg-muted text-muted-foreground cursor-not-allowed'
-            }
+            ${stoneStyles}
+            w-16 h-14 md:w-20 md:h-16
+            ${!isUnlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}
+            ${isCompleted ? 'bg-primary/20 border-primary' : ''}
           `}
         >
           {isCompleted ? (
-            <CheckCircle size={28} />
+            <CheckCircle size={28} className="text-primary" />
           ) : isUnlocked ? (
-            <Heart size={28} fill="currentColor" />
+            <span>{number}</span>
           ) : (
-            <Lock size={24} />
+            <Lock size={20} className="text-muted-foreground" />
           )}
-          <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-body text-muted-foreground">
-            Final
-          </span>
         </button>
 
         {isSelected && isUnlocked && (
@@ -132,22 +134,18 @@ export const Checkpoint = ({
         onClick={() => isUnlocked && onSelect()}
         disabled={!isUnlocked}
         className={`
-          relative w-14 h-14 rounded-full flex items-center justify-center
-          transition-all duration-300 transform
-          ${isUnlocked 
-            ? isCompleted
-              ? 'bg-primary/70 text-primary-foreground shadow-card'
-              : 'bg-primary text-primary-foreground shadow-romantic hover:scale-110'
-            : 'bg-muted text-muted-foreground cursor-not-allowed'
-          }
+          ${stoneStyles}
+          w-14 h-12 md:w-16 md:h-14
+          ${!isUnlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}
+          ${isCompleted ? 'bg-primary/20 border-primary' : ''}
         `}
       >
         {isCompleted ? (
-          <CheckCircle size={24} />
+          <CheckCircle size={24} className="text-primary" />
         ) : isUnlocked ? (
-          <span className="font-script text-xl">{number}</span>
+          <span>{number}</span>
         ) : (
-          <Lock size={20} />
+          <Lock size={18} className="text-muted-foreground" />
         )}
       </button>
 
