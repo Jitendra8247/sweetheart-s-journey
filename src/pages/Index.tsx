@@ -61,7 +61,7 @@ const PathLine = ({ completed }: { completed: number }) => (
       d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
       fill="none"
       stroke="hsl(var(--muted))"
-      strokeWidth="0.8"
+      strokeWidth="1.2"
       strokeLinecap="round"
       className="transition-all duration-500"
     />
@@ -70,10 +70,10 @@ const PathLine = ({ completed }: { completed: number }) => (
       d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
       fill="none"
       stroke="url(#pathGradient)"
-      strokeWidth="0.8"
+      strokeWidth="1.2"
       strokeLinecap="round"
-      strokeDasharray="200"
-      strokeDashoffset={200 - (completed * 20)}
+      strokeDasharray="300"
+      strokeDashoffset={300 - (completed * 30)}
       className="transition-all duration-1000"
     />
   </svg>
@@ -143,14 +143,9 @@ const HeroSection = ({ onScrollDown }: { onScrollDown: () => void }) => (
       {/* Scroll indicator */}
       <button
         onClick={onScrollDown}
-        className="flex flex-col items-center gap-2 mx-auto group cursor-pointer"
+        className="px-8 py-3 bg-primary text-primary-foreground rounded-full font-body font-semibold hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
       >
-        <span className="text-primary font-body font-medium group-hover:text-coral transition-colors">
-          Scroll Down
-        </span>
-        <div className="w-8 h-12 rounded-full border-2 border-primary flex items-start justify-center p-2 group-hover:border-coral transition-colors">
-          <div className="w-1.5 h-3 bg-primary rounded-full animate-bounce group-hover:bg-coral transition-colors" />
-        </div>
+        Explore Our Journey 💕
       </button>
     </div>
     
