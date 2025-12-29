@@ -1,28 +1,32 @@
 import { useState } from "react";
-import { Heart, Sparkles, Cake } from "lucide-react";
+import { Heart, Sparkles, Cake, Star, Music, Gift } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 
-// Scattered decorative emojis with positions
+// Scattered decorative emojis with positions - MORE and BIGGER
 const decorativeEmojis = [
-  { emoji: "💐", top: "8%", left: "5%" },
-  { emoji: "💐", top: "10%", right: "8%" },
-  { emoji: "🎈", top: "12%", right: "25%" },
-  { emoji: "✨", top: "18%", left: "20%" },
-  { emoji: "🎂", top: "24%", left: "35%" },
-  { emoji: "🖤", top: "15%", left: "3%" },
-  { emoji: "💕", top: "28%", right: "5%" },
-  { emoji: "🐧", top: "42%", right: "8%" },
-  { emoji: "😺", top: "48%", left: "45%" },
-  { emoji: "👫", top: "52%", left: "25%" },
-  { emoji: "💐", top: "55%", right: "15%" },
-  { emoji: "💕", top: "62%", right: "18%" },
-  { emoji: "🐶", top: "68%", right: "25%" },
-  { emoji: "🐧", top: "75%", left: "42%" },
-  { emoji: "💕", top: "72%", left: "15%" },
-  { emoji: "🖤", top: "85%", left: "8%" },
-  { emoji: "💐", top: "88%", right: "12%" },
-  { emoji: "✨", top: "92%", right: "30%" },
+  { emoji: "💐", top: "5%", left: "5%", size: "3xl" },
+  { emoji: "💐", top: "8%", right: "8%", size: "4xl" },
+  { emoji: "🎈", top: "15%", right: "20%", size: "3xl" },
+  { emoji: "✨", top: "12%", left: "25%", size: "2xl" },
+  { emoji: "🎂", top: "22%", left: "8%", size: "4xl" },
+  { emoji: "🖤", top: "18%", right: "35%", size: "3xl" },
+  { emoji: "💕", top: "28%", right: "5%", size: "4xl" },
+  { emoji: "🌹", top: "35%", left: "3%", size: "3xl" },
+  { emoji: "🦋", top: "32%", right: "12%", size: "3xl" },
+  { emoji: "💝", top: "40%", left: "15%", size: "4xl" },
+  { emoji: "🌸", top: "45%", right: "8%", size: "3xl" },
+  { emoji: "💐", top: "52%", right: "25%", size: "4xl" },
+  { emoji: "💕", top: "58%", left: "5%", size: "3xl" },
+  { emoji: "🎀", top: "55%", right: "3%", size: "4xl" },
+  { emoji: "🌺", top: "65%", left: "20%", size: "3xl" },
+  { emoji: "💖", top: "68%", right: "15%", size: "4xl" },
+  { emoji: "🦢", top: "72%", left: "8%", size: "3xl" },
+  { emoji: "💐", top: "78%", right: "5%", size: "4xl" },
+  { emoji: "🌷", top: "82%", left: "25%", size: "3xl" },
+  { emoji: "💗", top: "85%", right: "20%", size: "4xl" },
+  { emoji: "✨", top: "88%", left: "10%", size: "3xl" },
+  { emoji: "🎁", top: "92%", right: "10%", size: "4xl" },
 ];
 
 // Checkpoint positions for the winding path (percentages)
@@ -75,6 +79,90 @@ const PathLine = ({ completed }: { completed: number }) => (
   </svg>
 );
 
+// Hero section with birthday message
+const HeroSection = ({ onScrollDown }: { onScrollDown: () => void }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-background via-rose-light/20 to-background">
+    <FloatingHearts />
+    
+    {/* Decorative corners */}
+    <div className="absolute top-8 left-8 text-5xl animate-float">💐</div>
+    <div className="absolute top-8 right-8 text-5xl animate-float" style={{ animationDelay: "0.5s" }}>💐</div>
+    <div className="absolute bottom-32 left-12 text-4xl animate-float" style={{ animationDelay: "1s" }}>🌹</div>
+    <div className="absolute bottom-32 right-12 text-4xl animate-float" style={{ animationDelay: "1.5s" }}>🌷</div>
+    
+    {/* Floating decorations */}
+    <div className="absolute top-20 left-1/4 text-3xl animate-wiggle">✨</div>
+    <div className="absolute top-32 right-1/4 text-3xl animate-wiggle" style={{ animationDelay: "0.3s" }}>💕</div>
+    <div className="absolute top-1/4 left-16 text-4xl animate-float" style={{ animationDelay: "0.8s" }}>🦋</div>
+    <div className="absolute top-1/4 right-16 text-4xl animate-float" style={{ animationDelay: "1.2s" }}>🎀</div>
+    <div className="absolute bottom-1/3 left-20 text-3xl animate-wiggle" style={{ animationDelay: "0.6s" }}>💖</div>
+    <div className="absolute bottom-1/3 right-20 text-3xl animate-wiggle" style={{ animationDelay: "0.9s" }}>🌸</div>
+    
+    {/* Sparkles */}
+    <Sparkles className="absolute top-16 left-1/3 text-coral animate-sparkle" size={32} />
+    <Sparkles className="absolute top-24 right-1/3 text-primary animate-sparkle" style={{ animationDelay: "0.5s" }} size={28} />
+    <Star className="absolute bottom-40 left-1/4 text-coral animate-sparkle" style={{ animationDelay: "0.7s" }} size={24} fill="currentColor" />
+    <Star className="absolute bottom-48 right-1/4 text-primary animate-sparkle" style={{ animationDelay: "1s" }} size={20} fill="currentColor" />
+    
+    {/* Main content */}
+    <div className="relative z-10 text-center px-6 animate-fade-up">
+      {/* Hearts decoration above title */}
+      <div className="flex items-center justify-center gap-4 mb-6">
+        <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" />
+        <Heart className="text-coral animate-heartbeat" size={40} fill="currentColor" style={{ animationDelay: "0.2s" }} />
+        <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" style={{ animationDelay: "0.4s" }} />
+      </div>
+      
+      <h1 className="text-6xl md:text-8xl font-script text-foreground mb-2 drop-shadow-lg">
+        Happy Birthday
+      </h1>
+      <h2 className="text-5xl md:text-7xl font-script text-gradient mb-8">
+        My Love
+      </h2>
+      
+      {/* Cake with decorations */}
+      <div className="relative inline-block mb-8">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex gap-2">
+          <Sparkles className="text-coral animate-sparkle" size={20} />
+          <Sparkles className="text-primary animate-sparkle" size={24} style={{ animationDelay: "0.3s" }} />
+          <Sparkles className="text-coral animate-sparkle" size={20} style={{ animationDelay: "0.6s" }} />
+        </div>
+        <div className="bg-gradient-to-br from-primary/20 to-coral/20 rounded-3xl p-8 shadow-romantic">
+          <Cake className="text-primary mx-auto animate-float" size={120} />
+        </div>
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-2xl">🎂✨🎂</div>
+      </div>
+      
+      <p className="text-xl md:text-2xl text-muted-foreground font-body mb-4">
+        Wishing you the most magical day ever! 🎉
+      </p>
+      <p className="text-lg text-muted-foreground font-body mb-10 max-w-md mx-auto">
+        Scroll down to explore our love journey with 10 special checkpoints 💕
+      </p>
+      
+      {/* Scroll indicator */}
+      <button
+        onClick={onScrollDown}
+        className="flex flex-col items-center gap-2 mx-auto group cursor-pointer"
+      >
+        <span className="text-primary font-body font-medium group-hover:text-coral transition-colors">
+          Scroll Down
+        </span>
+        <div className="w-8 h-12 rounded-full border-2 border-primary flex items-start justify-center p-2 group-hover:border-coral transition-colors">
+          <div className="w-1.5 h-3 bg-primary rounded-full animate-bounce group-hover:bg-coral transition-colors" />
+        </div>
+      </button>
+    </div>
+    
+    {/* Bottom decorations */}
+    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 text-4xl">
+      <span className="animate-wiggle">🌹</span>
+      <span className="animate-wiggle" style={{ animationDelay: "0.2s" }}>💝</span>
+      <span className="animate-wiggle" style={{ animationDelay: "0.4s" }}>🌹</span>
+    </div>
+  </div>
+);
+
 const Index = () => {
   const [started, setStarted] = useState(false);
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
@@ -90,6 +178,11 @@ const Index = () => {
   const isUnlocked = (checkpoint: number) => {
     if (checkpoint === 1) return true;
     return completedCheckpoints.includes(checkpoint - 1);
+  };
+
+  const scrollToCheckpoints = () => {
+    const checkpointsSection = document.getElementById('checkpoints-section');
+    checkpointsSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   if (!started) {
@@ -134,66 +227,69 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-x-hidden">
-      {/* Header */}
-      <div className="text-center pt-6 pb-2 relative z-20">
-        <h1 className="text-3xl md:text-4xl font-script text-foreground mb-1">
-          HAPPY BIRTHDAY
-        </h1>
-        <h2 className="text-2xl md:text-3xl font-script text-foreground mb-2">
-          MY LOVE
-        </h2>
-        <div className="flex items-center justify-center gap-2 text-muted-foreground font-body">
-          <Cake className="text-primary" size={20} />
-          <span>cake.. with candles</span>
+    <div className="bg-background relative overflow-x-hidden">
+      {/* Hero Section - Full Page */}
+      <HeroSection onScrollDown={scrollToCheckpoints} />
+      
+      {/* Checkpoints Section */}
+      <div id="checkpoints-section" className="min-h-screen relative pt-8">
+        {/* Section Header */}
+        <div className="text-center py-8 relative z-20">
+          <h2 className="text-3xl md:text-4xl font-script text-foreground mb-2">
+            Our Love Journey
+          </h2>
+          <p className="text-lg text-muted-foreground font-body">
+            Complete each checkpoint to unlock the next 💕
+          </p>
+          <p className="text-sm text-primary font-body mt-2">
+            Progress: {completedCheckpoints.length}/10
+          </p>
         </div>
-        <p className="text-sm text-primary font-body mt-2">
-          Progress: {completedCheckpoints.length}/10
-        </p>
-      </div>
 
-      {/* Winding Path Container */}
-      <div className="relative w-full min-h-[1200px] md:min-h-[1000px]">
-        {/* Connecting Path */}
-        <PathLine completed={completedCheckpoints.length} />
+        {/* Winding Path Container */}
+        <div className="relative w-full min-h-[1200px] md:min-h-[1000px]">
+          {/* Connecting Path */}
+          <PathLine completed={completedCheckpoints.length} />
 
-        {/* Scattered Emojis */}
-        {decorativeEmojis.map((item, index) => (
-          <div
-            key={index}
-            className="absolute text-lg md:text-xl animate-float pointer-events-none select-none"
-            style={{
-              top: item.top,
-              left: item.left,
-              right: item.right,
-              animationDelay: `${index * 0.3}s`,
-            }}
-          >
-            {item.emoji}
-          </div>
-        ))}
+          {/* Scattered Emojis - BIGGER */}
+          {decorativeEmojis.map((item, index) => (
+            <div
+              key={index}
+              className={`absolute text-${item.size} animate-float pointer-events-none select-none`}
+              style={{
+                top: item.top,
+                left: item.left,
+                right: item.right,
+                animationDelay: `${index * 0.3}s`,
+                fontSize: item.size === "4xl" ? "2.5rem" : item.size === "3xl" ? "2rem" : "1.5rem",
+              }}
+            >
+              {item.emoji}
+            </div>
+          ))}
 
-        {/* Checkpoints */}
-        {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-          <div
-            key={num}
-            className="absolute z-10"
-            style={{
-              top: checkpointPositions[num - 1].top,
-              left: checkpointPositions[num - 1].left,
-              right: checkpointPositions[num - 1].right,
-            }}
-          >
-            <Checkpoint
-              number={num}
-              isUnlocked={isUnlocked(num)}
-              isCompleted={completedCheckpoints.includes(num)}
-              onComplete={() => handleComplete(num)}
-              onSelect={() => setSelectedCheckpoint(selectedCheckpoint === num ? null : num)}
-              isSelected={selectedCheckpoint === num}
-            />
-          </div>
-        ))}
+          {/* Checkpoints */}
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+            <div
+              key={num}
+              className="absolute z-10"
+              style={{
+                top: checkpointPositions[num - 1].top,
+                left: checkpointPositions[num - 1].left,
+                right: checkpointPositions[num - 1].right,
+              }}
+            >
+              <Checkpoint
+                number={num}
+                isUnlocked={isUnlocked(num)}
+                isCompleted={completedCheckpoints.includes(num)}
+                onComplete={() => handleComplete(num)}
+                onSelect={() => setSelectedCheckpoint(selectedCheckpoint === num ? null : num)}
+                isSelected={selectedCheckpoint === num}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Completion message */}
