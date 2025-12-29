@@ -112,8 +112,8 @@ export const Checkpoint = ({
         </button>
 
         {isSelected && isUnlocked && (
-          <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic">
+          <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+            <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic relative z-[101]">
               <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
               <button
                 onClick={onSelect}
@@ -150,8 +150,8 @@ export const Checkpoint = ({
       </button>
 
       {isSelected && isUnlocked && !isCompleted && (
-        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-background rounded-2xl p-8 max-w-md w-full shadow-romantic">
+        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-background rounded-2xl p-8 max-w-md w-full shadow-romantic relative z-[101]">
             {!showGame && !gameCompleted && (
               <div className="text-center">
                 <h2 className="text-2xl font-script text-foreground mb-2">
