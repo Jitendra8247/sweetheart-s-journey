@@ -1,32 +1,33 @@
 import { useState } from "react";
-import { Heart, Sparkles, Cake, Star, Music, Gift } from "lucide-react";
+import { Heart, Sparkles, Cake, Star } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
+import { BurstEmoji } from "@/components/BurstEmoji";
 
-// Scattered decorative emojis with positions - MORE and BIGGER
-const decorativeEmojis = [
-  { emoji: "💐", top: "5%", left: "5%", size: "3xl" },
-  { emoji: "💐", top: "8%", right: "8%", size: "4xl" },
-  { emoji: "🎈", top: "15%", right: "20%", size: "3xl" },
-  { emoji: "✨", top: "12%", left: "25%", size: "2xl" },
-  { emoji: "🎂", top: "22%", left: "8%", size: "4xl" },
-  { emoji: "🖤", top: "18%", right: "35%", size: "3xl" },
-  { emoji: "💕", top: "28%", right: "5%", size: "4xl" },
-  { emoji: "🌹", top: "35%", left: "3%", size: "3xl" },
-  { emoji: "🦋", top: "32%", right: "12%", size: "3xl" },
-  { emoji: "💝", top: "40%", left: "15%", size: "4xl" },
-  { emoji: "🌸", top: "45%", right: "8%", size: "3xl" },
-  { emoji: "💐", top: "52%", right: "25%", size: "4xl" },
-  { emoji: "💕", top: "58%", left: "5%", size: "3xl" },
-  { emoji: "🎀", top: "55%", right: "3%", size: "4xl" },
-  { emoji: "🌺", top: "65%", left: "20%", size: "3xl" },
-  { emoji: "💖", top: "68%", right: "15%", size: "4xl" },
-  { emoji: "🦢", top: "72%", left: "8%", size: "3xl" },
-  { emoji: "💐", top: "78%", right: "5%", size: "4xl" },
-  { emoji: "🌷", top: "82%", left: "25%", size: "3xl" },
-  { emoji: "💗", top: "85%", right: "20%", size: "4xl" },
-  { emoji: "✨", top: "88%", left: "10%", size: "3xl" },
-  { emoji: "🎁", top: "92%", right: "10%", size: "4xl" },
+// Interactive emojis with burst effect - only 4 types
+const interactiveEmojis: { type: "heart" | "star" | "balloon" | "rose"; top: string; left?: string; right?: string }[] = [
+  { type: "rose", top: "5%", left: "8%" },
+  { type: "heart", top: "8%", right: "10%" },
+  { type: "balloon", top: "15%", right: "22%" },
+  { type: "star", top: "12%", left: "28%" },
+  { type: "heart", top: "22%", left: "10%" },
+  { type: "star", top: "18%", right: "38%" },
+  { type: "balloon", top: "28%", right: "8%" },
+  { type: "rose", top: "35%", left: "5%" },
+  { type: "heart", top: "32%", right: "15%" },
+  { type: "star", top: "40%", left: "18%" },
+  { type: "balloon", top: "45%", right: "10%" },
+  { type: "rose", top: "52%", right: "28%" },
+  { type: "heart", top: "58%", left: "8%" },
+  { type: "star", top: "55%", right: "5%" },
+  { type: "balloon", top: "65%", left: "22%" },
+  { type: "rose", top: "68%", right: "18%" },
+  { type: "heart", top: "72%", left: "10%" },
+  { type: "star", top: "78%", right: "8%" },
+  { type: "balloon", top: "82%", left: "28%" },
+  { type: "rose", top: "85%", right: "22%" },
+  { type: "heart", top: "88%", left: "12%" },
+  { type: "star", top: "92%", right: "12%" },
 ];
 
 // Checkpoint positions for the winding path (percentages)
@@ -246,21 +247,18 @@ const Index = () => {
           {/* Connecting Path */}
           <PathLine completed={completedCheckpoints.length} />
 
-          {/* Scattered Emojis - BIGGER */}
-          {decorativeEmojis.map((item, index) => (
-            <div
+          {/* Interactive Burst Emojis */}
+          {interactiveEmojis.map((item, index) => (
+            <BurstEmoji
               key={index}
-              className={`absolute text-${item.size} animate-float pointer-events-none select-none`}
+              type={item.type}
               style={{
                 top: item.top,
                 left: item.left,
                 right: item.right,
                 animationDelay: `${index * 0.3}s`,
-                fontSize: item.size === "4xl" ? "2.5rem" : item.size === "3xl" ? "2rem" : "1.5rem",
               }}
-            >
-              {item.emoji}
-            </div>
+            />
           ))}
 
           {/* Checkpoints */}

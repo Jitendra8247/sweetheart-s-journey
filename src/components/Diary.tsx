@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Lock, ChevronLeft, ChevronRight, Heart, BookOpen } from "lucide-react";
 
 interface DiaryProps {
   onUnlock: () => void;
+  isUnlocked?: boolean;
 }
 
 const diaryPages = [
@@ -29,21 +30,36 @@ const diaryPages = [
   { quote: "You are my forever and always. I love you! 💕", photo: 21 },
 ];
 
-export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps & { isUnlocked?: boolean }) => {
+export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
   const [isLocked, setIsLocked] = useState(!isUnlocked);
   const [password, setPassword] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [shake, setShake] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
   const [isOpen, setIsOpen] = useState(isUnlocked);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipDirection, setFlipDirection] = useState<"next" | "prev">("next");
 
   const correctPassword = "11062023";
+
+  useEffect(() => {
+    if (isUnlocked) {
+      setIsLocked(false);
+      setIsOpen(true);
+    }
+  }, [isUnlocked]);
 
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password === correctPassword) {
       setIsLocked(false);
-      setTimeout(() => setIsOpen(true), 500);
+      setIsOpening(true);
+      // Lock opening animation
+      setTimeout(() => {
+        setIsOpening(false);
+        setIsOpen(true);
+      }, 1500);
       onUnlock();
     } else {
       setShake(true);
@@ -53,54 +69,83 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps & { isUnlocke
   };
 
   const nextPage = () => {
-    if (currentPage < diaryPages.length - 1) {
-      setCurrentPage(p => p + 1);
+    if (currentPage < diaryPages.length - 1 && !isFlipping) {
+      setFlipDirection("next");
+      setIsFlipping(true);
+      setTimeout(() => {
+        setCurrentPage(p => p + 1);
+        setIsFlipping(false);
+      }, 600);
     }
   };
 
   const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(p => p - 1);
+    if (currentPage > 0 && !isFlipping) {
+      setFlipDirection("prev");
+      setIsFlipping(true);
+      setTimeout(() => {
+        setCurrentPage(p => p - 1);
+        setIsFlipping(false);
+      }, 600);
     }
   };
 
   if (isLocked) {
     return (
-      <div className="text-center">
-        <div className={`relative inline-block ${shake ? 'animate-shake' : ''}`}>
-          {/* Diary cover */}
-          <div className="w-72 h-96 bg-gradient-to-br from-rose-dark to-primary rounded-lg shadow-romantic p-6 relative overflow-hidden">
-            {/* Decorative pattern */}
+      <div className="text-center perspective-1000">
+        <div className={`relative inline-block ${shake ? 'animate-shake' : ''} ${isOpening ? 'animate-diary-unlock' : ''}`}>
+          {/* Diary cover - looks like real leather diary */}
+          <div className="w-80 h-[420px] bg-gradient-to-br from-rose-900 via-rose-800 to-rose-950 rounded-r-lg rounded-l-sm shadow-2xl relative overflow-hidden border-l-8 border-rose-950">
+            {/* Leather texture overlay */}
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,transparent_20%,rgba(0,0,0,0.3)_100%)]" />
+            
+            {/* Spine detail */}
+            <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-rose-950 to-rose-900 shadow-inner" />
+            
+            {/* Decorative gold border */}
+            <div className="absolute inset-4 border-2 border-amber-500/40 rounded pointer-events-none">
+              <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-amber-500/60" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 border-t-2 border-r-2 border-amber-500/60" />
+              <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b-2 border-l-2 border-amber-500/60" />
+              <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-amber-500/60" />
+            </div>
+
+            {/* Decorative hearts pattern */}
             <div className="absolute inset-0 opacity-10">
-              {Array.from({ length: 20 }).map((_, i) => (
+              {Array.from({ length: 15 }).map((_, i) => (
                 <Heart
                   key={i}
-                  className="absolute text-primary-foreground"
+                  className="absolute text-amber-300"
                   style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
+                    left: `${10 + Math.random() * 80}%`,
+                    top: `${10 + Math.random() * 80}%`,
                     transform: `rotate(${Math.random() * 360}deg)`,
                   }}
-                  size={16}
+                  size={14}
                   fill="currentColor"
                 />
               ))}
             </div>
 
-            <div className="relative z-10 h-full flex flex-col items-center justify-center">
-              <BookOpen className="text-primary-foreground mb-4" size={48} />
-              <h2 className="text-3xl font-script text-primary-foreground mb-2">
+            <div className="relative z-10 h-full flex flex-col items-center justify-center px-8">
+              <BookOpen className="text-amber-400/80 mb-4 drop-shadow-lg" size={56} />
+              <h2 className="text-4xl font-script text-amber-100 mb-2 drop-shadow-lg">
                 Our Love Story
               </h2>
-              <p className="text-primary-foreground/80 text-sm font-body mb-8">
+              <p className="text-amber-200/70 text-sm font-body mb-10">
                 A diary of us 💕
               </p>
 
-              {/* Lock */}
-              <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
-                <Lock className="text-primary-foreground" size={32} />
+              {/* Golden lock */}
+              <div className={`absolute bottom-20 left-1/2 -translate-x-1/2 ${isOpening ? 'animate-lock-open' : ''}`}>
+                <div className="bg-gradient-to-b from-amber-400 to-amber-600 p-3 rounded-lg shadow-lg border-2 border-amber-300">
+                  <Lock className="text-amber-900" size={28} />
+                </div>
               </div>
             </div>
+
+            {/* Ribbon bookmark */}
+            <div className="absolute top-0 right-12 w-4 h-24 bg-gradient-to-b from-primary to-coral rounded-b-full shadow-md" />
           </div>
         </div>
 
@@ -140,58 +185,85 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps & { isUnlocke
         Our Love Story 💕
       </h2>
 
-      {/* Open Diary */}
-      <div className={`relative transition-all duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="flex justify-center gap-1">
-          {/* Left Page - Quote */}
-          <div className="w-64 h-80 bg-cream rounded-l-lg shadow-card border border-primary/10 p-6 flex flex-col items-center justify-center relative">
-            <div className="absolute top-2 left-4 text-xs text-muted-foreground font-body">
-              {currentPage * 2 + 1}
-            </div>
-            <Heart className="text-primary/30 mb-4" size={24} fill="currentColor" />
-            <p className="font-script text-xl text-foreground leading-relaxed text-center italic">
-              "{page.quote}"
-            </p>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-              <Heart className="text-primary/20" size={16} fill="currentColor" />
-            </div>
-          </div>
-
-          {/* Spine */}
-          <div className="w-4 bg-rose-dark shadow-inner" />
-
-          {/* Right Page - Photo placeholder */}
-          <div className="w-64 h-80 bg-cream rounded-r-lg shadow-card border border-primary/10 p-6 flex flex-col items-center justify-center relative">
-            <div className="absolute top-2 right-4 text-xs text-muted-foreground font-body">
-              {currentPage * 2 + 2}
-            </div>
-            <div className="w-40 h-48 bg-muted rounded-lg border-4 border-primary/20 flex items-center justify-center relative overflow-hidden">
-              <div className="text-center">
-                <Heart className="text-primary/40 mx-auto mb-2" size={32} fill="currentColor" />
-                <p className="text-xs text-muted-foreground font-body">
-                  Photo {page.photo}
-                </p>
-                <p className="text-xs text-muted-foreground font-body mt-1">
-                  Add your photo here 📸
+      {/* Open Diary with page turn effect */}
+      <div className={`relative transition-all duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'} perspective-1000`}>
+        <div className="flex justify-center">
+          {/* Book container */}
+          <div className="relative preserve-3d">
+            {/* Left Page - Quote */}
+            <div className="inline-block w-56 md:w-64 h-72 md:h-80 bg-gradient-to-br from-amber-50 to-amber-100 rounded-l-sm shadow-xl border border-amber-200/50 p-4 md:p-6 relative overflow-hidden align-top">
+              {/* Page texture */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
+              
+              {/* Page edge shadow */}
+              <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent" />
+              
+              <div className="absolute top-2 left-4 text-xs text-amber-700/50 font-body">
+                {currentPage * 2 + 1}
+              </div>
+              
+              <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                <Heart className="text-primary/40 mb-4" size={24} fill="currentColor" />
+                <p className="font-script text-lg md:text-xl text-amber-900 leading-relaxed text-center italic">
+                  "{page.quote}"
                 </p>
               </div>
-              {/* Tape corners */}
-              <div className="absolute -top-1 -left-1 w-8 h-4 bg-secondary/80 rotate-[-30deg]" />
-              <div className="absolute -top-1 -right-1 w-8 h-4 bg-secondary/80 rotate-[30deg]" />
+              
+              {/* Decorative corner */}
+              <div className="absolute bottom-3 right-3">
+                <Heart className="text-primary/20" size={14} fill="currentColor" />
+              </div>
+            </div>
+
+            {/* Spine */}
+            <div className="inline-block w-3 md:w-4 h-72 md:h-80 bg-gradient-to-r from-rose-900 via-rose-800 to-rose-900 shadow-inner align-top" />
+
+            {/* Right Page - Photo with flip animation */}
+            <div 
+              className={`inline-block w-56 md:w-64 h-72 md:h-80 bg-gradient-to-bl from-amber-50 to-amber-100 rounded-r-sm shadow-xl border border-amber-200/50 p-4 md:p-6 relative overflow-hidden align-top origin-left preserve-3d ${
+                isFlipping ? (flipDirection === "next" ? "animate-page-flip-out" : "animate-page-flip-in") : ""
+              }`}
+            >
+              {/* Page texture */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
+              
+              {/* Page edge shadow */}
+              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent" />
+              
+              <div className="absolute top-2 right-4 text-xs text-amber-700/50 font-body">
+                {currentPage * 2 + 2}
+              </div>
+              
+              <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                <div className="w-32 md:w-40 h-40 md:h-48 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
+                  <div className="text-center">
+                    <Heart className="text-primary/40 mx-auto mb-2" size={28} fill="currentColor" />
+                    <p className="text-xs text-amber-700/70 font-body">
+                      Photo {page.photo}
+                    </p>
+                    <p className="text-xs text-amber-600/60 font-body mt-1">
+                      Add your photo 📸
+                    </p>
+                  </div>
+                  {/* Tape corners */}
+                  <div className="absolute -top-2 -left-2 w-10 h-5 bg-amber-100/90 rotate-[-30deg] shadow-sm" />
+                  <div className="absolute -top-2 -right-2 w-10 h-5 bg-amber-100/90 rotate-[30deg] shadow-sm" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-center gap-8 mt-6">
+        <div className="flex items-center justify-center gap-6 md:gap-8 mt-6">
           <button
             onClick={prevPage}
-            disabled={currentPage === 0}
+            disabled={currentPage === 0 || isFlipping}
             className={`
               p-3 rounded-full transition-all
-              ${currentPage === 0 
+              ${currentPage === 0 || isFlipping
                 ? 'text-muted-foreground/30 cursor-not-allowed' 
-                : 'text-primary hover:bg-primary/10'
+                : 'text-primary hover:bg-primary/10 hover:scale-110'
               }
             `}
           >
@@ -204,12 +276,12 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps & { isUnlocke
 
           <button
             onClick={nextPage}
-            disabled={currentPage === diaryPages.length - 1}
+            disabled={currentPage === diaryPages.length - 1 || isFlipping}
             className={`
               p-3 rounded-full transition-all
-              ${currentPage === diaryPages.length - 1 
+              ${currentPage === diaryPages.length - 1 || isFlipping
                 ? 'text-muted-foreground/30 cursor-not-allowed' 
-                : 'text-primary hover:bg-primary/10'
+                : 'text-primary hover:bg-primary/10 hover:scale-110'
               }
             `}
           >
