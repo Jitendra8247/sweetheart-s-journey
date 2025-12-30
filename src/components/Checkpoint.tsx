@@ -150,10 +150,10 @@ export const Checkpoint = ({
       </button>
 
       {isSelected && isUnlocked && !isCompleted && (
-        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-          <div className="bg-background rounded-2xl p-8 max-w-md w-full shadow-romantic relative z-[101]">
+        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-2 sm:p-4">
+          <div className="bg-background rounded-2xl p-4 sm:p-8 max-w-md w-full min-h-[70vh] sm:min-h-[60vh] shadow-romantic relative z-[101] flex flex-col">
             {!showGame && !gameCompleted && (
-              <div className="text-center">
+              <div className="text-center flex-1 flex flex-col justify-center">
                 <h2 className="text-2xl font-script text-foreground mb-2">
                   Checkpoint {number}
                 </h2>
@@ -173,15 +173,19 @@ export const Checkpoint = ({
             )}
 
             {showGame && GameComponent && (
-              <GameComponent onComplete={handleGameComplete} />
+              <div className="flex-1 flex flex-col justify-center">
+                <GameComponent onComplete={handleGameComplete} />
+              </div>
             )}
 
-            <button
-              onClick={onSelect}
-              className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
-            >
-              Close
-            </button>
+            {!showGame && (
+              <button
+                onClick={onSelect}
+                className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
+              >
+                Close
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -188,23 +188,24 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
       {/* Open Diary with page turn effect */}
       <div className={`relative transition-all duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'} perspective-1000`}>
         <div className="flex justify-center">
-          {/* Book container */}
-          <div className="relative preserve-3d">
+          {/* Book container - stacked on mobile, side by side on larger screens */}
+          <div className="relative preserve-3d flex flex-col sm:flex-row">
             {/* Left Page - Quote */}
-            <div className="inline-block w-56 md:w-64 h-72 md:h-80 bg-gradient-to-br from-amber-50 to-amber-100 rounded-l-sm shadow-xl border border-amber-200/50 p-4 md:p-6 relative overflow-hidden align-top">
+            <div className="w-72 sm:w-64 md:w-80 h-48 sm:h-80 md:h-96 bg-gradient-to-br from-amber-50 to-amber-100 rounded-t-sm sm:rounded-l-sm sm:rounded-tr-none shadow-xl border border-amber-200/50 p-4 sm:p-6 relative overflow-hidden">
               {/* Page texture */}
               <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
               
               {/* Page edge shadow */}
-              <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent" />
+              <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent hidden sm:block" />
+              <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-200/30 to-transparent sm:hidden" />
               
               <div className="absolute top-2 left-4 text-xs text-amber-700/50 font-body">
                 {currentPage * 2 + 1}
               </div>
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center">
-                <Heart className="text-primary/40 mb-4" size={24} fill="currentColor" />
-                <p className="font-script text-lg md:text-xl text-amber-900 leading-relaxed text-center italic">
+              <div className="relative z-10 h-full flex flex-col items-center justify-center px-2">
+                <Heart className="text-primary/40 mb-2 sm:mb-4" size={20} fill="currentColor" />
+                <p className="font-script text-base sm:text-lg md:text-xl text-amber-900 leading-relaxed text-center italic">
                   "{page.quote}"
                 </p>
               </div>
@@ -215,12 +216,12 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
               </div>
             </div>
 
-            {/* Spine */}
-            <div className="inline-block w-3 md:w-4 h-72 md:h-80 bg-gradient-to-r from-rose-900 via-rose-800 to-rose-900 shadow-inner align-top" />
+            {/* Spine - horizontal on mobile, vertical on larger */}
+            <div className="w-72 sm:w-4 h-2 sm:h-80 md:h-96 bg-gradient-to-b sm:bg-gradient-to-r from-rose-900 via-rose-800 to-rose-900 shadow-inner mx-auto sm:mx-0" />
 
             {/* Right Page - Photo with flip animation */}
             <div 
-              className={`inline-block w-56 md:w-64 h-72 md:h-80 bg-gradient-to-bl from-amber-50 to-amber-100 rounded-r-sm shadow-xl border border-amber-200/50 p-4 md:p-6 relative overflow-hidden align-top origin-left preserve-3d ${
+              className={`w-72 sm:w-64 md:w-80 h-56 sm:h-80 md:h-96 bg-gradient-to-bl from-amber-50 to-amber-100 rounded-b-sm sm:rounded-r-sm sm:rounded-bl-none shadow-xl border border-amber-200/50 p-4 sm:p-6 relative overflow-hidden origin-top sm:origin-left preserve-3d ${
                 isFlipping ? (flipDirection === "next" ? "animate-page-flip-out" : "animate-page-flip-in") : ""
               }`}
             >
@@ -228,20 +229,21 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
               <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
               
               {/* Page edge shadow */}
-              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent" />
+              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent hidden sm:block" />
+              <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-200/30 to-transparent sm:hidden" />
               
               <div className="absolute top-2 right-4 text-xs text-amber-700/50 font-body">
                 {currentPage * 2 + 2}
               </div>
               
               <div className="relative z-10 h-full flex flex-col items-center justify-center">
-                <div className="w-32 md:w-40 h-40 md:h-48 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
+                <div className="w-44 sm:w-48 md:w-56 h-36 sm:h-48 md:h-64 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
                   <div className="text-center">
                     <Heart className="text-primary/40 mx-auto mb-2" size={28} fill="currentColor" />
-                    <p className="text-xs text-amber-700/70 font-body">
+                    <p className="text-sm sm:text-base text-amber-700/70 font-body">
                       Photo {page.photo}
                     </p>
-                    <p className="text-xs text-amber-600/60 font-body mt-1">
+                    <p className="text-xs sm:text-sm text-amber-600/60 font-body mt-1">
                       Add your photo 📸
                     </p>
                   </div>
