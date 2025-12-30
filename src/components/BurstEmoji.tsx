@@ -13,26 +13,37 @@ const emojiConfig = {
 };
 
 export const BurstEmoji = ({ type, style }: BurstEmojiProps) => {
+  const [tapCount, setTapCount] = useState(0);
   const [isBursting, setIsBursting] = useState(false);
   const [showText, setShowText] = useState(false);
   const [isGone, setIsGone] = useState(false);
 
   const config = emojiConfig[type];
+  const maxTaps = 5 + Math.floor(Math.random() * 2); // 5-6 taps to burst
+
+  // Calculate scale based on tap count (grows with each tap)
+  const currentScale = 1 + (tapCount * 0.25);
 
   const handleClick = () => {
     if (isBursting || isGone) return;
     
-    setIsBursting(true);
+    const newTapCount = tapCount + 1;
+    setTapCount(newTapCount);
     
-    // After burst animation, show text
-    setTimeout(() => {
-      setShowText(true);
-    }, 500);
-    
-    // Hide everything after 2 seconds
-    setTimeout(() => {
-      setIsGone(true);
-    }, 2500);
+    // Check if it should burst
+    if (newTapCount >= maxTaps) {
+      setIsBursting(true);
+      
+      // After burst animation, show text
+      setTimeout(() => {
+        setShowText(true);
+      }, 600);
+      
+      // Hide everything after 2 seconds
+      setTimeout(() => {
+        setIsGone(true);
+      }, 2600);
+    }
   };
 
   if (isGone) return null;
@@ -48,11 +59,12 @@ export const BurstEmoji = ({ type, style }: BurstEmojiProps) => {
     >
       {!showText ? (
         <span
-          className={`inline-block text-4xl md:text-5xl transition-transform origin-center ${
-            isBursting ? "animate-burst" : "hover:scale-110 animate-float"
+          className={`inline-block text-4xl md:text-5xl transition-all duration-150 origin-center ${
+            isBursting ? "animate-pump-burst" : "hover:brightness-110"
           }`}
           style={{
-            animationDelay: style?.animationDelay,
+            transform: `scale(${currentScale})`,
+            filter: tapCount > 0 ? `drop-shadow(0 0 ${tapCount * 3}px hsl(var(--primary)))` : undefined,
           }}
         >
           {config.emoji}
