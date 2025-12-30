@@ -228,3 +228,68 @@
     backface-visibility: hidden;
   }
 }
+
+/* Diary unlock animation */
+@keyframes diary-unlock {
+  0% { transform: perspective(1000px) rotateY(0deg); }
+  50% { transform: perspective(1000px) rotateY(-5deg); }
+  100% { transform: perspective(1000px) rotateY(0deg) scale(0.95); opacity: 0.8; }
+}
+
+.animate-diary-unlock {
+  animation: diary-unlock 1.5s ease-out forwards;
+}
+
+/* Lock open animation */
+@keyframes lock-open {
+  0% { transform: translateX(-50%) rotate(0deg); }
+  30% { transform: translateX(-50%) rotate(-20deg); }
+  50% { transform: translateX(-50%) rotate(0deg) translateY(-10px); }
+  100% { transform: translateX(-50%) translateY(-30px) scale(0); opacity: 0; }
+}
+
+.animate-lock-open {
+  animation: lock-open 1s ease-out forwards;
+}
+
+/* Page flip animations */
+@keyframes page-flip-out {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(-180deg); }
+}
+
+@keyframes page-flip-in {
+  0% { transform: rotateY(180deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+.animate-page-flip-out {
+  animation: page-flip-out 0.6s ease-in-out;
+}
+
+.animate-page-flip-in {
+  animation: page-flip-in 0.6s ease-in-out;
+}
+
+/* Burst animation for emojis */
+@keyframes burst {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(2.5); opacity: 1; }
+  80% { transform: scale(3); opacity: 0.5; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+
+.animate-burst {
+  animation: burst 0.5s ease-out forwards;
+}
+
+/* Text pop animation */
+@keyframes text-pop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-text-pop {
+  animation: text-pop 0.4s ease-out forwards;
+}
