@@ -3,6 +3,7 @@ import { Heart, Sparkles, Cake, Star } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 import { BurstEmoji } from "@/components/BurstEmoji";
+import { Diary } from "@/components/Diary";
 
 // Interactive emojis with burst effect - only 4 types
 const interactiveEmojis: { type: "heart" | "star" | "balloon" | "rose"; top: string; left?: string; right?: string }[] = [
@@ -163,10 +164,19 @@ const Index = () => {
   const [started, setStarted] = useState(false);
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
+  const [showDiaryAuto, setShowDiaryAuto] = useState(false);
 
   const handleComplete = (checkpoint: number) => {
     if (!completedCheckpoints.includes(checkpoint)) {
-      setCompletedCheckpoints([...completedCheckpoints, checkpoint]);
+      const newCompleted = [...completedCheckpoints, checkpoint];
+      setCompletedCheckpoints(newCompleted);
+      
+      // Auto show diary when checkpoint 9 is completed (all first 9 done)
+      if (checkpoint === 9 && newCompleted.length === 9) {
+        setTimeout(() => {
+          setShowDiaryAuto(true);
+        }, 1000);
+      }
     }
     setSelectedCheckpoint(null);
   };
@@ -285,17 +295,23 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Completion message */}
-      {completedCheckpoints.length === 10 && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 animate-fade-up">
-          <div className="bg-gradient-to-r from-primary to-coral rounded-2xl p-6 max-w-sm mx-auto shadow-romantic">
-            <Sparkles className="mx-auto text-primary-foreground mb-3" size={28} />
-            <h2 className="text-2xl font-script text-primary-foreground mb-2 text-center">
-              Journey Complete!
-            </h2>
-            <p className="text-primary-foreground/90 font-body text-sm text-center">
-              Thank you for completing our love journey. You mean the world to me! 💝
-            </p>
+      {/* Auto-show Diary when all 9 checkpoints are complete */}
+      {showDiaryAuto && (
+        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic relative z-[101]">
+            <Diary 
+              onUnlock={() => {
+                handleComplete(10);
+                setShowDiaryAuto(false);
+              }} 
+              isUnlocked={completedCheckpoints.includes(10)} 
+            />
+            <button
+              onClick={() => setShowDiaryAuto(false)}
+              className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
