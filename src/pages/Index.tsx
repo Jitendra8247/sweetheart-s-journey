@@ -7,30 +7,14 @@ import { Diary } from "@/components/Diary";
 import birthdayCake from "@/assets/birthday-cake.png";
 import penguinBackground from "@/assets/penguin-background.jpg";
 
-// Interactive emojis with burst effect - only 4 types
+// Interactive emojis with burst effect - reduced count
 const interactiveEmojis: { type: "heart" | "star" | "balloon" | "rose"; top: string; left?: string; right?: string }[] = [
-  { type: "rose", top: "5%", left: "8%" },
-  { type: "heart", top: "8%", right: "10%" },
-  { type: "balloon", top: "15%", right: "22%" },
-  { type: "star", top: "12%", left: "28%" },
-  { type: "heart", top: "22%", left: "10%" },
-  { type: "star", top: "18%", right: "38%" },
-  { type: "balloon", top: "28%", right: "8%" },
-  { type: "rose", top: "35%", left: "5%" },
-  { type: "heart", top: "32%", right: "15%" },
-  { type: "star", top: "40%", left: "18%" },
-  { type: "balloon", top: "45%", right: "10%" },
-  { type: "rose", top: "52%", right: "28%" },
-  { type: "heart", top: "58%", left: "8%" },
-  { type: "star", top: "55%", right: "5%" },
-  { type: "balloon", top: "65%", left: "22%" },
-  { type: "rose", top: "68%", right: "18%" },
-  { type: "heart", top: "72%", left: "10%" },
-  { type: "star", top: "78%", right: "8%" },
-  { type: "balloon", top: "82%", left: "28%" },
-  { type: "rose", top: "85%", right: "22%" },
-  { type: "heart", top: "88%", left: "12%" },
-  { type: "star", top: "92%", right: "12%" },
+  { type: "rose", top: "8%", left: "8%" },
+  { type: "heart", top: "20%", right: "10%" },
+  { type: "balloon", top: "35%", left: "5%" },
+  { type: "star", top: "50%", right: "8%" },
+  { type: "heart", top: "65%", left: "10%" },
+  { type: "rose", top: "80%", right: "12%" },
 ];
 
 // Checkpoint positions for the winding path (percentages)
@@ -84,19 +68,10 @@ const PathLine = ({ completed }: { completed: number }) => (
 );
 
 // Hero section with birthday message
-const HeroSection = ({ onScrollDown, hideButton }: { onScrollDown: () => void; hideButton: boolean }) => (
+const HeroSection = () => (
   <div 
     className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
-    style={{
-      backgroundImage: `url(${penguinBackground})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-    }}
   >
-    {/* Overlay for readability */}
-    <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
-    
     <FloatingHearts />
     
     {/* Main content */}
@@ -134,16 +109,6 @@ const HeroSection = ({ onScrollDown, hideButton }: { onScrollDown: () => void; h
       <p className="text-base text-foreground/80 font-body mb-8 max-w-md mx-auto drop-shadow">
         Scroll down to explore our love journey with 10 special checkpoints 💕
       </p>
-      
-      {/* Scroll indicator - hide after clicking */}
-      {!hideButton && (
-        <button
-          onClick={onScrollDown}
-          className="px-8 py-3 bg-primary text-primary-foreground rounded-full font-body font-semibold hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
-        >
-          Explore Our Journey 💕
-        </button>
-      )}
     </div>
     
     {/* Bottom decorations */}
@@ -160,7 +125,6 @@ const Index = () => {
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
   const [showDiaryAuto, setShowDiaryAuto] = useState(false);
-  const [hasClickedExplore, setHasClickedExplore] = useState(false);
 
   const handleComplete = (checkpoint: number) => {
     if (!completedCheckpoints.includes(checkpoint)) {
@@ -180,12 +144,6 @@ const Index = () => {
   const isUnlocked = (checkpoint: number) => {
     if (checkpoint === 1) return true;
     return completedCheckpoints.includes(checkpoint - 1);
-  };
-
-  const scrollToCheckpoints = () => {
-    setHasClickedExplore(true);
-    const checkpointsSection = document.getElementById('checkpoints-section');
-    checkpointsSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   if (!started) {
@@ -248,9 +206,21 @@ const Index = () => {
   }
 
   return (
-    <div className="bg-background relative overflow-x-hidden">
+    <div 
+      className="relative overflow-x-hidden"
+      style={{
+        backgroundImage: `url(${penguinBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Global overlay for readability */}
+      <div className="fixed inset-0 bg-background/40 backdrop-blur-[2px] pointer-events-none" />
+      
       {/* Hero Section - Full Page */}
-      <HeroSection onScrollDown={scrollToCheckpoints} hideButton={hasClickedExplore} />
+      <HeroSection />
       
       {/* Checkpoints Section */}
       <div id="checkpoints-section" className="min-h-screen relative pt-8">
