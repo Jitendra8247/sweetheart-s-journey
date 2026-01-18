@@ -112,12 +112,12 @@ export const Checkpoint = ({
         </button>
 
         {isSelected && isUnlocked && (
-          <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-            <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic relative z-[101]">
+          <div className="fixed inset-0 bg-foreground/70 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
+            <div className="bg-background rounded-2xl p-6 sm:p-8 max-w-2xl w-full min-h-[80vh] max-h-[95vh] overflow-y-auto shadow-2xl relative z-[10000] border-2 border-primary/20">
               <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
               <button
                 onClick={onSelect}
-                className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
+                className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto py-2"
               >
                 Close
               </button>
@@ -150,22 +150,22 @@ export const Checkpoint = ({
       </button>
 
       {isSelected && isUnlocked && !isCompleted && (
-        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-2 sm:p-4">
-          <div className="bg-background rounded-2xl p-4 sm:p-8 max-w-md w-full min-h-[70vh] sm:min-h-[60vh] shadow-romantic relative z-[101] flex flex-col">
+        <div className="fixed inset-0 bg-foreground/70 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
+          <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full min-h-[80vh] max-h-[95vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20">
             {!showGame && !gameCompleted && (
-              <div className="text-center flex-1 flex flex-col justify-center">
-                <h2 className="text-2xl font-script text-foreground mb-2">
+              <div className="text-center flex-1 flex flex-col justify-center py-8">
+                <h2 className="text-3xl font-script text-foreground mb-4">
                   Checkpoint {number}
                 </h2>
-                <p className="text-muted-foreground font-body mb-6">
+                <p className="text-muted-foreground font-body mb-6 text-lg">
                   Complete the game to unlock your message!
                 </p>
-                <p className="text-primary font-body font-medium mb-6">
+                <p className="text-primary font-body font-medium mb-8 text-xl">
                   Game: {games[number - 1]?.name}
                 </p>
                 <button
                   onClick={() => setShowGame(true)}
-                  className="px-8 py-3 bg-primary text-primary-foreground rounded-full font-body font-medium hover:bg-rose-dark transition-colors shadow-romantic"
+                  className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-colors shadow-romantic"
                 >
                   Start Game 💕
                 </button>
@@ -173,7 +173,7 @@ export const Checkpoint = ({
             )}
 
             {showGame && GameComponent && (
-              <div className="flex-1 flex flex-col justify-center">
+              <div className="flex-1 flex flex-col justify-center py-4">
                 <GameComponent onComplete={handleGameComplete} />
               </div>
             )}
@@ -181,7 +181,7 @@ export const Checkpoint = ({
             {!showGame && (
               <button
                 onClick={onSelect}
-                className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto"
+                className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto py-2"
               >
                 Close
               </button>
