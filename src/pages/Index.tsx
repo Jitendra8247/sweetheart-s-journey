@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Heart, Sparkles, Cake, Star } from "lucide-react";
+import { Heart, Sparkles, Star } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 import { BurstEmoji } from "@/components/BurstEmoji";
 import { Diary } from "@/components/Diary";
+import birthdayCake from "@/assets/birthday-cake.png";
+import penguinBackground from "@/assets/penguin-background.jpg";
 
 // Interactive emojis with burst effect - only 4 types
 const interactiveEmojis: { type: "heart" | "star" | "balloon" | "rose"; top: string; left?: string; right?: string }[] = [
@@ -82,29 +84,20 @@ const PathLine = ({ completed }: { completed: number }) => (
 );
 
 // Hero section with birthday message
-const HeroSection = ({ onScrollDown }: { onScrollDown: () => void }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-background via-rose-light/20 to-background">
+const HeroSection = ({ onScrollDown, hideButton }: { onScrollDown: () => void; hideButton: boolean }) => (
+  <div 
+    className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
+    style={{
+      backgroundImage: `url(${penguinBackground})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }}
+  >
+    {/* Overlay for readability */}
+    <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
+    
     <FloatingHearts />
-    
-    {/* Decorative corners */}
-    <div className="absolute top-8 left-8 text-5xl animate-float">💐</div>
-    <div className="absolute top-8 right-8 text-5xl animate-float" style={{ animationDelay: "0.5s" }}>💐</div>
-    <div className="absolute bottom-32 left-12 text-4xl animate-float" style={{ animationDelay: "1s" }}>🌹</div>
-    <div className="absolute bottom-32 right-12 text-4xl animate-float" style={{ animationDelay: "1.5s" }}>🌷</div>
-    
-    {/* Floating decorations */}
-    <div className="absolute top-20 left-1/4 text-3xl animate-wiggle">✨</div>
-    <div className="absolute top-32 right-1/4 text-3xl animate-wiggle" style={{ animationDelay: "0.3s" }}>💕</div>
-    <div className="absolute top-1/4 left-16 text-4xl animate-float" style={{ animationDelay: "0.8s" }}>🦋</div>
-    <div className="absolute top-1/4 right-16 text-4xl animate-float" style={{ animationDelay: "1.2s" }}>🎀</div>
-    <div className="absolute bottom-1/3 left-20 text-3xl animate-wiggle" style={{ animationDelay: "0.6s" }}>💖</div>
-    <div className="absolute bottom-1/3 right-20 text-3xl animate-wiggle" style={{ animationDelay: "0.9s" }}>🌸</div>
-    
-    {/* Sparkles */}
-    <Sparkles className="absolute top-16 left-1/3 text-coral animate-sparkle" size={32} />
-    <Sparkles className="absolute top-24 right-1/3 text-primary animate-sparkle" style={{ animationDelay: "0.5s" }} size={28} />
-    <Star className="absolute bottom-40 left-1/4 text-coral animate-sparkle" style={{ animationDelay: "0.7s" }} size={24} fill="currentColor" />
-    <Star className="absolute bottom-48 right-1/4 text-primary animate-sparkle" style={{ animationDelay: "1s" }} size={20} fill="currentColor" />
     
     {/* Main content */}
     <div className="relative z-10 text-center px-6 animate-fade-up">
@@ -115,47 +108,49 @@ const HeroSection = ({ onScrollDown }: { onScrollDown: () => void }) => (
         <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" style={{ animationDelay: "0.4s" }} />
       </div>
       
-      <h1 className="text-6xl md:text-8xl font-script text-foreground mb-2 drop-shadow-lg">
+      <h1 className="text-5xl md:text-7xl font-script text-foreground mb-2 drop-shadow-lg">
         Happy Birthday
       </h1>
-      <h2 className="text-5xl md:text-7xl font-script text-gradient mb-8">
+      <h2 className="text-4xl md:text-6xl font-script text-gradient mb-8">
         My Love
       </h2>
       
-      {/* Cake with decorations */}
+      {/* Cake image */}
       <div className="relative inline-block mb-8">
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex gap-2">
           <Sparkles className="text-coral animate-sparkle" size={20} />
           <Sparkles className="text-primary animate-sparkle" size={24} style={{ animationDelay: "0.3s" }} />
           <Sparkles className="text-coral animate-sparkle" size={20} style={{ animationDelay: "0.6s" }} />
         </div>
-        <div className="bg-gradient-to-br from-primary/20 to-coral/20 rounded-3xl p-8 shadow-romantic">
-          <Cake className="text-primary mx-auto animate-float" size={120} />
+        <div className="bg-white/80 rounded-3xl p-6 shadow-romantic backdrop-blur-sm">
+          <img src={birthdayCake} alt="Birthday Cake" className="w-32 h-32 md:w-40 md:h-40 object-contain animate-float" />
         </div>
-        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-2xl">🎂✨🎂</div>
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-xl">✨🎂✨</div>
       </div>
       
-      <p className="text-xl md:text-2xl text-muted-foreground font-body mb-4">
+      <p className="text-lg md:text-xl text-foreground/90 font-body mb-3 drop-shadow">
         Wishing you the most magical day ever! 🎉
       </p>
-      <p className="text-lg text-muted-foreground font-body mb-10 max-w-md mx-auto">
+      <p className="text-base text-foreground/80 font-body mb-8 max-w-md mx-auto drop-shadow">
         Scroll down to explore our love journey with 10 special checkpoints 💕
       </p>
       
-      {/* Scroll indicator */}
-      <button
-        onClick={onScrollDown}
-        className="px-8 py-3 bg-primary text-primary-foreground rounded-full font-body font-semibold hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
-      >
-        Explore Our Journey 💕
-      </button>
+      {/* Scroll indicator - hide after clicking */}
+      {!hideButton && (
+        <button
+          onClick={onScrollDown}
+          className="px-8 py-3 bg-primary text-primary-foreground rounded-full font-body font-semibold hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
+        >
+          Explore Our Journey 💕
+        </button>
+      )}
     </div>
     
     {/* Bottom decorations */}
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 text-4xl">
-      <span className="animate-wiggle">🌹</span>
+    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 text-3xl z-10">
+      <span className="animate-wiggle">🐧</span>
       <span className="animate-wiggle" style={{ animationDelay: "0.2s" }}>💝</span>
-      <span className="animate-wiggle" style={{ animationDelay: "0.4s" }}>🌹</span>
+      <span className="animate-wiggle" style={{ animationDelay: "0.4s" }}>🐧</span>
     </div>
   </div>
 );
@@ -165,6 +160,7 @@ const Index = () => {
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
   const [showDiaryAuto, setShowDiaryAuto] = useState(false);
+  const [hasClickedExplore, setHasClickedExplore] = useState(false);
 
   const handleComplete = (checkpoint: number) => {
     if (!completedCheckpoints.includes(checkpoint)) {
@@ -187,13 +183,25 @@ const Index = () => {
   };
 
   const scrollToCheckpoints = () => {
+    setHasClickedExplore(true);
     const checkpointsSection = document.getElementById('checkpoints-section');
     checkpointsSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   if (!started) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center relative overflow-hidden">
+      <div 
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        style={{
+          backgroundImage: `url(${penguinBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
+        
         <FloatingHearts />
         
         <div className="relative z-10 text-center px-6 animate-fade-up">
@@ -206,14 +214,14 @@ const Index = () => {
             fill="currentColor"
           />
           
-          <h1 className="text-5xl md:text-7xl font-script text-foreground mb-4">
+          <h1 className="text-5xl md:text-7xl font-script text-foreground mb-4 drop-shadow-lg">
             For My Love
           </h1>
           
-          <p className="text-xl text-muted-foreground font-body mb-2">
+          <p className="text-xl text-foreground/90 font-body mb-2 drop-shadow">
             A journey of 10 checkpoints
           </p>
-          <p className="text-lg text-muted-foreground font-body mb-8">
+          <p className="text-lg text-foreground/80 font-body mb-8 drop-shadow">
             Each one holds a game and a message just for you 💕
           </p>
           
@@ -224,9 +232,16 @@ const Index = () => {
             Begin Our Journey
           </button>
           
-          <p className="mt-8 text-sm text-muted-foreground font-body italic">
+          <p className="mt-8 text-sm text-foreground/70 font-body italic drop-shadow">
             Made with love, just for you ❤️
           </p>
+          
+          {/* Penguin decorations */}
+          <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-4 text-3xl">
+            <span className="animate-wiggle">🐧</span>
+            <span className="animate-wiggle" style={{ animationDelay: "0.3s" }}>💕</span>
+            <span className="animate-wiggle" style={{ animationDelay: "0.6s" }}>🐧</span>
+          </div>
         </div>
       </div>
     );
@@ -235,7 +250,7 @@ const Index = () => {
   return (
     <div className="bg-background relative overflow-x-hidden">
       {/* Hero Section - Full Page */}
-      <HeroSection onScrollDown={scrollToCheckpoints} />
+      <HeroSection onScrollDown={scrollToCheckpoints} hideButton={hasClickedExplore} />
       
       {/* Checkpoints Section */}
       <div id="checkpoints-section" className="min-h-screen relative pt-8">
