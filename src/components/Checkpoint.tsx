@@ -112,8 +112,8 @@ export const Checkpoint = ({
         </button>
 
         {isSelected && isUnlocked && (
-          <div className="fixed inset-0 bg-foreground/70 backdrop-blur-md flex items-center justify-center z-[9999] p-4">
-            <div className="bg-background rounded-2xl p-6 sm:p-8 max-w-2xl w-full min-h-[80vh] max-h-[95vh] overflow-y-auto shadow-2xl relative z-[10000] border-2 border-primary/20">
+          <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
+            <div className="bg-background rounded-2xl p-4 sm:p-8 max-w-2xl w-full h-[92vh] sm:h-auto sm:min-h-[80vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] border-2 border-primary/20 isolate">
               <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
               <button
                 onClick={onSelect}
@@ -150,8 +150,8 @@ export const Checkpoint = ({
       </button>
 
       {isSelected && isUnlocked && !isCompleted && (
-        <div className="fixed inset-0 bg-foreground/70 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
-          <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full min-h-[80vh] max-h-[95vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20">
+        <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
+          <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full h-[92vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20 isolate">
             {!showGame && !gameCompleted && (
               <div className="text-center flex-1 flex flex-col justify-center py-8">
                 <h2 className="text-3xl font-script text-foreground mb-4">
@@ -173,7 +173,7 @@ export const Checkpoint = ({
             )}
 
             {showGame && GameComponent && (
-              <div className="flex-1 flex flex-col justify-center py-4">
+              <div className="flex-1 flex flex-col justify-center py-4 bg-card rounded-xl border border-border px-2">
                 <GameComponent onComplete={handleGameComplete} />
               </div>
             )}
