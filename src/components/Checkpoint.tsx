@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Heart, Lock, CheckCircle } from "lucide-react";
+import { Lock, CheckCircle } from "lucide-react";
 import { Envelope } from "./Envelope";
 import { MemoryGame } from "./games/MemoryGame";
 import { CatchHeartsGame } from "./games/CatchHeartsGame";
@@ -12,6 +12,7 @@ import { ClickHeartGame } from "./games/ClickHeartGame";
 import { FindDifferenceGame } from "./games/FindDifferenceGame";
 import { CompleteHeartGame } from "./games/CompleteHeartGame";
 import { Diary } from "./Diary";
+import { BirthdayIntro } from "./BirthdayIntro";
 
 interface CheckpointProps {
   number: number;
@@ -60,6 +61,7 @@ export const Checkpoint = ({
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showEnvelope, setShowEnvelope] = useState(false);
   const [diaryUnlocked, setDiaryUnlocked] = useState(false);
+  const [showDiary, setShowDiary] = useState(false);
 
   const handleGameComplete = () => {
     setGameCompleted(true);
@@ -114,7 +116,11 @@ export const Checkpoint = ({
         {isSelected && isUnlocked && (
           <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
             <div className="bg-background rounded-2xl p-4 sm:p-8 max-w-2xl w-full h-[92vh] sm:h-auto sm:min-h-[80vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] border-2 border-primary/20 isolate">
-              <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
+              {!showDiary ? (
+                <BirthdayIntro onShowDiary={() => setShowDiary(true)} />
+              ) : (
+                <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
+              )}
               <button
                 onClick={onSelect}
                 className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto py-2"
