@@ -128,7 +128,7 @@ export const Checkpoint = ({
         )}
       </button>
 
-      {isSelected && isUnlocked && !isCompleted && (
+      {isSelected && isUnlocked && !isCompleted && !showEnvelope && (
         <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
           <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full h-[92vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20 isolate">
             {!showGame && !gameCompleted && (
@@ -157,7 +157,7 @@ export const Checkpoint = ({
               </div>
             )}
 
-            {!showGame && (
+            {!showGame && !gameCompleted && (
               <button
                 onClick={onSelect}
                 className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto py-2"
