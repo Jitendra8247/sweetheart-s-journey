@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Lock, CheckCircle } from "lucide-react";
 import { Envelope } from "./Envelope";
 import { MemoryGame } from "./games/MemoryGame";
@@ -11,8 +12,6 @@ import { NumberGuessGame } from "./games/NumberGuessGame";
 import { ClickHeartGame } from "./games/ClickHeartGame";
 import { FindDifferenceGame } from "./games/FindDifferenceGame";
 import { CompleteHeartGame } from "./games/CompleteHeartGame";
-import { Diary } from "./Diary";
-import { BirthdayIntro } from "./BirthdayIntro";
 
 interface CheckpointProps {
   number: number;
@@ -57,11 +56,10 @@ export const Checkpoint = ({
   onSelect,
   isSelected 
 }: CheckpointProps) => {
+  const navigate = useNavigate();
   const [showGame, setShowGame] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showEnvelope, setShowEnvelope] = useState(false);
-  const [diaryUnlocked, setDiaryUnlocked] = useState(false);
-  const [showDiary, setShowDiary] = useState(false);
 
   const handleGameComplete = () => {
     setGameCompleted(true);
@@ -71,11 +69,6 @@ export const Checkpoint = ({
 
   const handleEnvelopeClose = () => {
     setShowEnvelope(false);
-    onComplete();
-  };
-
-  const handleDiaryUnlock = () => {
-    setDiaryUnlocked(true);
     onComplete();
   };
 
@@ -90,47 +83,27 @@ export const Checkpoint = ({
     font-script text-2xl md:text-3xl text-foreground
   `;
 
-  // Checkpoint 10 is special - it's the diary
+  // Checkpoint 10 is special - navigates to birthday page
   if (number === 10) {
     return (
-      <>
-        <button
-          onClick={() => isUnlocked && onSelect()}
-          disabled={!isUnlocked}
-          className={`
-            ${stoneStyles}
-            w-16 h-14 md:w-20 md:h-16
-            ${!isUnlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}
-            ${isCompleted ? 'bg-primary/20 border-primary' : ''}
-          `}
-        >
-          {isCompleted ? (
-            <CheckCircle size={28} className="text-primary" />
-          ) : isUnlocked ? (
-            <span>{number}</span>
-          ) : (
-            <Lock size={20} className="text-muted-foreground" />
-          )}
-        </button>
-
-        {isSelected && isUnlocked && (
-          <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
-            <div className="bg-background rounded-2xl p-4 sm:p-8 max-w-2xl w-full h-[92vh] sm:h-auto sm:min-h-[80vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] border-2 border-primary/20 isolate">
-              {!showDiary ? (
-                <BirthdayIntro onShowDiary={() => setShowDiary(true)} />
-              ) : (
-                <Diary onUnlock={handleDiaryUnlock} isUnlocked={diaryUnlocked} />
-              )}
-              <button
-                onClick={onSelect}
-                className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors font-body block mx-auto py-2"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+      <button
+        onClick={() => isUnlocked && navigate("/birthday")}
+        disabled={!isUnlocked}
+        className={`
+          ${stoneStyles}
+          w-16 h-14 md:w-20 md:h-16
+          ${!isUnlocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}
+          ${isCompleted ? 'bg-primary/20 border-primary' : ''}
+        `}
+      >
+        {isCompleted ? (
+          <CheckCircle size={28} className="text-primary" />
+        ) : isUnlocked ? (
+          <span>{number}</span>
+        ) : (
+          <Lock size={20} className="text-muted-foreground" />
         )}
-      </>
+      </button>
     );
   }
 
