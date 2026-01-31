@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Heart, Sparkles } from "lucide-react";
 
 interface EnvelopeProps {
@@ -11,14 +11,11 @@ export const Envelope = ({ message, checkpointNumber, onClose }: EnvelopeProps) 
   const [isOpen, setIsOpen] = useState(false);
   const [showCard, setShowCard] = useState(false);
 
-  // Auto-open envelope after a short delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-      setTimeout(() => setShowCard(true), 1000);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  const handleOpen = () => {
+    if (isOpen) return;
+    setIsOpen(true);
+    window.setTimeout(() => setShowCard(true), 1000);
+  };
 
   return (
     <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[200] p-4">
@@ -45,7 +42,12 @@ export const Envelope = ({ message, checkpointNumber, onClose }: EnvelopeProps) 
         )}
 
         {/* Envelope */}
-        <div className="w-80 sm:w-96 relative perspective-1000">
+        <button
+          type="button"
+          onClick={handleOpen}
+          className="w-80 sm:w-96 relative perspective-1000 text-left"
+          aria-label={isOpen ? "Envelope opened" : "Open envelope"}
+        >
           {/* Envelope Body - cute rounded design */}
           <div className={`relative bg-gradient-to-b from-rose-light via-secondary to-card rounded-2xl shadow-romantic border-2 border-primary/20 overflow-hidden transition-all duration-700 ${isOpen ? 'h-auto min-h-[400px] sm:min-h-[450px]' : 'h-64'}`}>
             
@@ -139,12 +141,12 @@ export const Envelope = ({ message, checkpointNumber, onClose }: EnvelopeProps) 
             {/* Opening hint */}
             {!isOpen && (
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-sm text-muted-foreground font-body animate-pulse flex items-center gap-2">
-                <span>Opening</span>
+                <span>Tap to open</span>
                 <span className="animate-bounce">💌</span>
               </div>
             )}
           </div>
-        </div>
+        </button>
 
         {/* Continue button */}
         {showCard && (
