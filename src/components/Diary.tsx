@@ -27,7 +27,8 @@ const diaryPages = [
   { quote: "Forever isn't long enough with you.", photo: 18 },
   { quote: "You make my heart smile.", photo: 19 },
   { quote: "I choose you, and I'll choose you over and over.", photo: 20 },
-  { quote: "You are my forever and always. I love you! 💕", photo: 21 },
+  { quote: "Our love story is my greatest treasure.", photo: 21 },
+  { quote: "You are my forever and always. I love you! 💕", photo: 22 },
 ];
 
 export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
@@ -185,43 +186,42 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
         Our Love Story 💕
       </h2>
 
-      {/* Open Diary with page turn effect */}
+      {/* Open Diary with page turn effect - horizontal layout on all screens */}
       <div className={`relative transition-all duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'} perspective-1000`}>
-        <div className="flex justify-center">
-          {/* Book container - stacked on mobile, side by side on larger screens */}
-          <div className="relative preserve-3d flex flex-col sm:flex-row">
+        <div className="flex justify-center overflow-x-auto px-2">
+          {/* Book container - always horizontal (side by side) */}
+          <div className="relative preserve-3d flex flex-row min-w-max">
             {/* Left Page - Quote */}
-            <div className="w-72 sm:w-64 md:w-80 h-48 sm:h-80 md:h-96 bg-gradient-to-br from-amber-50 to-amber-100 rounded-t-sm sm:rounded-l-sm sm:rounded-tr-none shadow-xl border border-amber-200/50 p-4 sm:p-6 relative overflow-hidden">
+            <div className="w-40 xs:w-48 sm:w-64 md:w-80 h-56 xs:h-64 sm:h-80 md:h-96 bg-gradient-to-br from-amber-50 to-amber-100 rounded-l-sm shadow-xl border border-amber-200/50 p-3 sm:p-6 relative overflow-hidden">
               {/* Page texture */}
               <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
               
               {/* Page edge shadow */}
-              <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent hidden sm:block" />
-              <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-200/30 to-transparent sm:hidden" />
+              <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent" />
               
-              <div className="absolute top-2 left-4 text-xs text-amber-700/50 font-body">
+              <div className="absolute top-2 left-3 text-xs text-amber-700/50 font-body">
                 {currentPage * 2 + 1}
               </div>
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center px-2">
-                <Heart className="text-primary/40 mb-2 sm:mb-4" size={20} fill="currentColor" />
-                <p className="font-script text-base sm:text-lg md:text-xl text-amber-900 leading-relaxed text-center italic">
+              <div className="relative z-10 h-full flex flex-col items-center justify-center px-1 sm:px-2">
+                <Heart className="text-primary/40 mb-2 sm:mb-4" size={16} fill="currentColor" />
+                <p className="font-script text-sm xs:text-base sm:text-lg md:text-xl text-amber-900 leading-relaxed text-center italic">
                   "{page.quote}"
                 </p>
               </div>
               
               {/* Decorative corner */}
               <div className="absolute bottom-3 right-3">
-                <Heart className="text-primary/20" size={14} fill="currentColor" />
+                <Heart className="text-primary/20" size={12} fill="currentColor" />
               </div>
             </div>
 
-            {/* Spine - horizontal on mobile, vertical on larger */}
-            <div className="w-72 sm:w-4 h-2 sm:h-80 md:h-96 bg-gradient-to-b sm:bg-gradient-to-r from-rose-900 via-rose-800 to-rose-900 shadow-inner mx-auto sm:mx-0" />
+            {/* Spine - always vertical */}
+            <div className="w-2 sm:w-4 h-56 xs:h-64 sm:h-80 md:h-96 bg-gradient-to-r from-rose-900 via-rose-800 to-rose-900 shadow-inner" />
 
             {/* Right Page - Photo with flip animation */}
             <div 
-              className={`w-72 sm:w-64 md:w-80 h-56 sm:h-80 md:h-96 bg-gradient-to-bl from-amber-50 to-amber-100 rounded-b-sm sm:rounded-r-sm sm:rounded-bl-none shadow-xl border border-amber-200/50 p-4 sm:p-6 relative overflow-hidden origin-top sm:origin-left preserve-3d ${
+              className={`w-40 xs:w-48 sm:w-64 md:w-80 h-56 xs:h-64 sm:h-80 md:h-96 bg-gradient-to-bl from-amber-50 to-amber-100 rounded-r-sm shadow-xl border border-amber-200/50 p-3 sm:p-6 relative overflow-hidden origin-left preserve-3d ${
                 isFlipping ? (flipDirection === "next" ? "animate-page-flip-out" : "animate-page-flip-in") : ""
               }`}
             >
@@ -229,27 +229,26 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
               <div className="absolute inset-0 bg-[linear-gradient(to_left,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:20px_100%]" />
               
               {/* Page edge shadow */}
-              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent hidden sm:block" />
-              <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-200/30 to-transparent sm:hidden" />
+              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent" />
               
-              <div className="absolute top-2 right-4 text-xs text-amber-700/50 font-body">
+              <div className="absolute top-2 right-3 text-xs text-amber-700/50 font-body">
                 {currentPage * 2 + 2}
               </div>
               
               <div className="relative z-10 h-full flex flex-col items-center justify-center">
-                <div className="w-44 sm:w-48 md:w-56 h-36 sm:h-48 md:h-64 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
+                <div className="w-28 xs:w-36 sm:w-48 md:w-56 h-32 xs:h-40 sm:h-48 md:h-64 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
                   <div className="text-center">
-                    <Heart className="text-primary/40 mx-auto mb-2" size={28} fill="currentColor" />
-                    <p className="text-sm sm:text-base text-amber-700/70 font-body">
+                    <Heart className="text-primary/40 mx-auto mb-1 sm:mb-2" size={20} fill="currentColor" />
+                    <p className="text-xs sm:text-base text-amber-700/70 font-body">
                       Photo {page.photo}
                     </p>
-                    <p className="text-xs sm:text-sm text-amber-600/60 font-body mt-1">
+                    <p className="text-xs text-amber-600/60 font-body mt-1 hidden xs:block">
                       Add your photo 📸
                     </p>
                   </div>
                   {/* Tape corners */}
-                  <div className="absolute -top-2 -left-2 w-10 h-5 bg-amber-100/90 rotate-[-30deg] shadow-sm" />
-                  <div className="absolute -top-2 -right-2 w-10 h-5 bg-amber-100/90 rotate-[30deg] shadow-sm" />
+                  <div className="absolute -top-2 -left-2 w-6 sm:w-10 h-3 sm:h-5 bg-amber-100/90 rotate-[-30deg] shadow-sm" />
+                  <div className="absolute -top-2 -right-2 w-6 sm:w-10 h-3 sm:h-5 bg-amber-100/90 rotate-[30deg] shadow-sm" />
                 </div>
               </div>
             </div>

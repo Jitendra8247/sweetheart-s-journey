@@ -131,12 +131,7 @@ const Index = () => {
       const newCompleted = [...completedCheckpoints, checkpoint];
       setCompletedCheckpoints(newCompleted);
       
-      // Auto show diary when checkpoint 9 is completed (all first 9 done)
-      if (checkpoint === 9 && newCompleted.length === 9) {
-        setTimeout(() => {
-          setShowDiaryAuto(true);
-        }, 1000);
-      }
+      // Checkpoint 9 now shows envelope like others, no auto-diary
     }
     setSelectedCheckpoint(null);
   };
