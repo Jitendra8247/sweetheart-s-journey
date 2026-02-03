@@ -5,29 +5,26 @@ interface IntroSequenceProps {
   onComplete: () => void;
 }
 
-type Step = "title" | "question1" | "question2" | "catchCat" | "complete";
+type Step = "question1" | "question2" | "catchCat" | "complete";
 
 export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
-  const [step, setStep] = useState<Step>("title");
+  const [step, setStep] = useState<Step>("question1");
   const [showTitle, setShowTitle] = useState(false);
+  const [showQuestion, setShowQuestion] = useState(false);
   const [noButtonPosition, setNoButtonPosition] = useState({ x: 0, y: 0 });
   const [catPosition, setCatPosition] = useState({ x: 50, y: 50 });
   const [catCaught, setCatCaught] = useState(false);
   const [showCatMessage, setShowCatMessage] = useState(false);
 
-  // Show title with animation
+  // Show title with animation, then show question after title animates
   useEffect(() => {
-    const timer = setTimeout(() => setShowTitle(true), 300);
-    return () => clearTimeout(timer);
+    const titleTimer = setTimeout(() => setShowTitle(true), 300);
+    const questionTimer = setTimeout(() => setShowQuestion(true), 1800);
+    return () => {
+      clearTimeout(titleTimer);
+      clearTimeout(questionTimer);
+    };
   }, []);
-
-  // Auto-advance from title to first question
-  useEffect(() => {
-    if (showTitle && step === "title") {
-      const timer = setTimeout(() => setStep("question1"), 2500);
-      return () => clearTimeout(timer);
-    }
-  }, [showTitle, step]);
 
   // Move cat randomly
   useEffect(() => {
@@ -88,112 +85,9 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
         ))}
       </div>
 
-      {/* Title Step */}
-      {step === "title" && (
-        <div className="text-center z-10">
-          <h1
-            className={`text-5xl md:text-7xl font-script text-foreground transition-all duration-1000 ${
-              showTitle
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-full"
-            }`}
-          >
-            Happy Birthday
-          </h1>
-          <h2
-            className={`text-4xl md:text-6xl font-script text-gradient mt-4 transition-all duration-1000 delay-500 ${
-              showTitle
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-full"
-            }`}
-          >
-            My Love
-          </h2>
-          <div className="flex justify-center gap-3 mt-8">
-            <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" />
-            <Heart className="text-coral animate-heartbeat" size={40} fill="currentColor" style={{ animationDelay: "0.2s" }} />
-            <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" style={{ animationDelay: "0.4s" }} />
-          </div>
-        </div>
-      )}
-
-      {/* Question 1 */}
-      {step === "question1" && (
-        <div className="text-center z-10 px-6 animate-fade-in">
-          <Heart className="mx-auto text-primary mb-6 animate-heartbeat" size={60} fill="currentColor" />
-          <h2 className="text-2xl md:text-4xl font-script text-foreground mb-8 leading-relaxed">
-            I have something special for you my love...
-            <br />
-            <span className="text-primary">Wanna see?</span> 💕
-          </h2>
-          <div className="flex justify-center gap-6">
-            <button
-              onClick={handleYesClick}
-              className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
-            >
-              Yes! 💖
-            </button>
-            <button
-              onMouseEnter={moveNoButton}
-              onTouchStart={moveNoButton}
-              onClick={moveNoButton}
-              style={
-                noButtonPosition.x !== 0 || noButtonPosition.y !== 0
-                  ? {
-                      position: "fixed",
-                      left: noButtonPosition.x,
-                      top: noButtonPosition.y,
-                      zIndex: 50,
-                    }
-                  : {}
-              }
-              className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
-            >
-              No 😢
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Question 2 */}
-      {step === "question2" && (
-        <div className="text-center z-10 px-6 animate-fade-in">
-          <Heart className="mx-auto text-primary mb-6 animate-heartbeat" size={60} fill="currentColor" />
-          <h2 className="text-2xl md:text-4xl font-script text-foreground mb-8">
-            Do you love me? 🥺💕
-          </h2>
-          <div className="flex justify-center gap-6">
-            <button
-              onClick={handleYesClick}
-              className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
-            >
-              Yes, Always! 💖
-            </button>
-            <button
-              onMouseEnter={moveNoButton}
-              onTouchStart={moveNoButton}
-              onClick={moveNoButton}
-              style={
-                noButtonPosition.x !== 0 || noButtonPosition.y !== 0
-                  ? {
-                      position: "fixed",
-                      left: noButtonPosition.x,
-                      top: noButtonPosition.y,
-                      zIndex: 50,
-                    }
-                  : {}
-              }
-              className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
-            >
-              No 😢
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Catch the Cat */}
+      {/* Catch the Cat - Full screen takeover */}
       {step === "catchCat" && (
-        <div className="fixed inset-0 z-20">
+        <div className="fixed inset-0 z-20 bg-gradient-to-br from-rose-50 via-pink-50 to-coral-50">
           {/* Message */}
           {showCatMessage && !catCaught && (
             <div className="absolute top-8 left-1/2 -translate-x-1/2 text-center animate-fade-in z-30">
@@ -232,6 +126,107 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                 <p className="text-xl text-primary font-body mt-4 animate-pulse">
                   Loading your surprise...
                 </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Title + Questions - Same page */}
+      {step !== "catchCat" && (
+        <div className="text-center z-10 px-6">
+          <h1
+            className={`text-5xl md:text-7xl font-script text-foreground transition-all duration-1000 ${
+              showTitle
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-full"
+            }`}
+          >
+            Happy Birthday
+          </h1>
+          <h2
+            className={`text-4xl md:text-6xl font-script text-gradient mt-4 transition-all duration-1000 delay-500 ${
+              showTitle
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-full"
+            }`}
+          >
+            My Love
+          </h2>
+          <div className={`flex justify-center gap-3 mt-8 transition-opacity duration-500 ${showTitle ? "opacity-100" : "opacity-0"}`}>
+            <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" />
+            <Heart className="text-coral animate-heartbeat" size={40} fill="currentColor" style={{ animationDelay: "0.2s" }} />
+            <Heart className="text-primary animate-heartbeat" size={32} fill="currentColor" style={{ animationDelay: "0.4s" }} />
+          </div>
+
+          {/* Question 1 - Below title */}
+          {step === "question1" && showQuestion && (
+            <div className="mt-12 animate-fade-in">
+              <p className="text-xl md:text-2xl font-script text-foreground mb-6">
+                I have something special for you my love...
+                <br />
+                <span className="text-primary">Wanna see?</span> 💕
+              </p>
+              <div className="flex justify-center gap-6">
+                <button
+                  onClick={handleYesClick}
+                  className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
+                >
+                  Yes! 💖
+                </button>
+                <button
+                  onMouseEnter={moveNoButton}
+                  onTouchStart={moveNoButton}
+                  onClick={moveNoButton}
+                  style={
+                    noButtonPosition.x !== 0 || noButtonPosition.y !== 0
+                      ? {
+                          position: "fixed",
+                          left: noButtonPosition.x,
+                          top: noButtonPosition.y,
+                          zIndex: 50,
+                        }
+                      : {}
+                  }
+                  className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
+                >
+                  No 😢
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Question 2 - Below title */}
+          {step === "question2" && (
+            <div className="mt-12 animate-fade-in">
+              <p className="text-xl md:text-2xl font-script text-foreground mb-6">
+                Do you love me? 🥺💕
+              </p>
+              <div className="flex justify-center gap-6">
+                <button
+                  onClick={handleYesClick}
+                  className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
+                >
+                  Yes, Always! 💖
+                </button>
+                <button
+                  onMouseEnter={moveNoButton}
+                  onTouchStart={moveNoButton}
+                  onClick={moveNoButton}
+                  style={
+                    noButtonPosition.x !== 0 || noButtonPosition.y !== 0
+                      ? {
+                          position: "fixed",
+                          left: noButtonPosition.x,
+                          top: noButtonPosition.y,
+                          zIndex: 50,
+                        }
+                      : {}
+                  }
+                  className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
+                >
+                  No 😢
+                </button>
               </div>
             </div>
           )}
