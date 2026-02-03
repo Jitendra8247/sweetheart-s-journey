@@ -123,7 +123,6 @@ const HeroSection = () => (
 
 const Index = () => {
   const [introComplete, setIntroComplete] = useState(false);
-  const [started, setStarted] = useState(false);
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
   const [showDiaryAuto, setShowDiaryAuto] = useState(false);
@@ -144,65 +143,6 @@ const Index = () => {
   // Show intro sequence first
   if (!introComplete) {
     return <IntroSequence onComplete={() => setIntroComplete(true)} />;
-  }
-
-  if (!started) {
-    return (
-      <div 
-        className="min-h-screen flex items-center justify-center relative overflow-hidden"
-        style={{
-          backgroundImage: `url(${penguinBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        {/* Overlay for readability */}
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px]" />
-        
-        <FloatingHearts />
-        
-        <div className="relative z-10 text-center px-6 animate-fade-up">
-          <Sparkles className="absolute -top-12 -left-8 text-coral animate-sparkle" size={24} />
-          <Sparkles className="absolute -top-8 -right-12 text-primary animate-sparkle" style={{ animationDelay: "0.5s" }} size={20} />
-          
-          <Heart 
-            className="mx-auto text-primary mb-6 animate-heartbeat drop-shadow-lg" 
-            size={80} 
-            fill="currentColor"
-          />
-          
-          <h1 className="text-5xl md:text-7xl font-script text-foreground mb-4 drop-shadow-lg">
-            For My Love
-          </h1>
-          
-          <p className="text-xl text-foreground/90 font-body mb-2 drop-shadow">
-            A journey of 10 checkpoints
-          </p>
-          <p className="text-lg text-foreground/80 font-body mb-8 drop-shadow">
-            Each one holds a game and a message just for you 💕
-          </p>
-          
-          <button
-            onClick={() => setStarted(true)}
-            className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
-          >
-            Begin Our Journey
-          </button>
-          
-          <p className="mt-8 text-sm text-foreground/70 font-body italic drop-shadow">
-            Made with love, just for you ❤️
-          </p>
-          
-          {/* Penguin decorations */}
-          <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-4 text-3xl">
-            <span className="animate-wiggle">🐧</span>
-            <span className="animate-wiggle" style={{ animationDelay: "0.3s" }}>💕</span>
-            <span className="animate-wiggle" style={{ animationDelay: "0.6s" }}>🐧</span>
-          </div>
-        </div>
-      </div>
-    );
   }
 
   return (
