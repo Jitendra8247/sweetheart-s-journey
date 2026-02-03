@@ -4,6 +4,7 @@ import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 import { BurstEmoji } from "@/components/BurstEmoji";
 import { Diary } from "@/components/Diary";
+import { IntroSequence } from "@/components/IntroSequence";
 import birthdayCake from "@/assets/birthday-cake.png";
 import penguinBackground from "@/assets/penguin-background.jpg";
 
@@ -121,6 +122,7 @@ const HeroSection = () => (
 );
 
 const Index = () => {
+  const [introComplete, setIntroComplete] = useState(false);
   const [started, setStarted] = useState(false);
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
@@ -130,8 +132,6 @@ const Index = () => {
     if (!completedCheckpoints.includes(checkpoint)) {
       const newCompleted = [...completedCheckpoints, checkpoint];
       setCompletedCheckpoints(newCompleted);
-      
-      // Checkpoint 9 now shows envelope like others, no auto-diary
     }
     setSelectedCheckpoint(null);
   };
@@ -140,6 +140,11 @@ const Index = () => {
     if (checkpoint === 1) return true;
     return completedCheckpoints.includes(checkpoint - 1);
   };
+
+  // Show intro sequence first
+  if (!introComplete) {
+    return <IntroSequence onComplete={() => setIntroComplete(true)} />;
+  }
 
   if (!started) {
     return (
