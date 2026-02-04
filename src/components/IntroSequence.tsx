@@ -5,7 +5,7 @@ interface IntroSequenceProps {
   onComplete: () => void;
 }
 
-type Step = "question1" | "question2" | "catchCat" | "complete";
+type Step = "question1" | "question2" | "question3" | "catchBird" | "complete";
 
 export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
   const [step, setStep] = useState<Step>("question1");
@@ -15,6 +15,8 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
   const [catPosition, setCatPosition] = useState({ x: 50, y: 50 });
   const [catCaught, setCatCaught] = useState(false);
   const [showCatMessage, setShowCatMessage] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [birdSpeed, setBirdSpeed] = useState(600);
 
   // Show title with animation, then show question after title animates
   useEffect(() => {
@@ -26,19 +28,19 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
     };
   }, []);
 
-  // Move cat randomly
+  // Move bird randomly - gets faster as you miss
   useEffect(() => {
-    if (step === "catchCat" && !catCaught) {
+    if (step === "catchBird" && !catCaught) {
       setShowCatMessage(true);
       const interval = setInterval(() => {
         setCatPosition({
           x: Math.random() * 70 + 10,
           y: Math.random() * 60 + 15,
         });
-      }, 600);
+      }, birdSpeed);
       return () => clearInterval(interval);
     }
-  }, [step, catCaught]);
+  }, [step, catCaught, birdSpeed]);
 
   const moveNoButton = useCallback(() => {
     const maxX = window.innerWidth - 120;
@@ -54,15 +56,34 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
       setNoButtonPosition({ x: 0, y: 0 });
       setStep("question2");
     } else if (step === "question2") {
-      setStep("catchCat");
+      setNoButtonPosition({ x: 0, y: 0 });
+      setStep("question3");
+    } else if (step === "question3") {
+      setStep("catchBird");
     }
   };
 
-  const handleCatClick = () => {
-    setCatCaught(true);
-    setTimeout(() => {
-      onComplete();
-    }, 1000);
+  const handleBirdClick = () => {
+    setClickCount(prev => prev + 1);
+    // Need 3 clicks to catch (frustrating!)
+    if (clickCount >= 2) {
+      setCatCaught(true);
+      setTimeout(() => {
+        onComplete();
+      }, 1000);
+    } else {
+      // Bird escapes and gets faster
+      setBirdSpeed(prev => Math.max(300, prev - 50));
+      setCatPosition({
+        x: Math.random() * 70 + 10,
+        y: Math.random() * 60 + 15,
+      });
+    }
+  };
+
+  const handleMissClick = () => {
+    // Clicked but missed the bird - make it faster
+    setBirdSpeed(prev => Math.max(350, prev - 20));
   };
 
   return (
@@ -85,9 +106,12 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
         ))}
       </div>
 
-      {/* Catch the Cat - Full screen takeover */}
-      {step === "catchCat" && (
-        <div className="fixed inset-0 z-20 bg-gradient-to-br from-rose-50 via-pink-50 to-coral-50">
+      {/* Catch the Bird - Full screen takeover */}
+      {step === "catchBird" && (
+        <div 
+          className="fixed inset-0 z-20 bg-gradient-to-br from-rose-50 via-pink-50 to-coral-50"
+          onClick={handleMissClick}
+        >
           {/* Message */}
           {showCatMessage && !catCaught && (
             <div className="absolute top-8 left-1/2 -translate-x-1/2 text-center animate-fade-in z-30">
@@ -95,15 +119,23 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                 Catch the Blue Bird! 🐦
               </h2>
               <p className="text-lg text-muted-foreground font-body">
-                Click on it before it flies away!
+                Click on it {3 - clickCount} more time{3 - clickCount !== 1 ? 's' : ''} to catch it!
               </p>
+              {clickCount > 0 && (
+                <p className="text-sm text-coral font-body mt-2 animate-pulse">
+                  Almost got it! Keep trying! 💕
+                </p>
+              )}
             </div>
           )}
 
           {/* Flying Blue Bird */}
           {!catCaught && (
             <button
-              onClick={handleCatClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBirdClick();
+              }}
               className="absolute text-4xl md:text-5xl transition-all duration-300 hover:scale-125 cursor-pointer z-40"
               style={{
                 left: `${catPosition.x}%`,
@@ -133,7 +165,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
       )}
 
       {/* Title + Questions - Same page */}
-      {step !== "catchCat" && (
+      {step !== "catchBird" && (
         <div className="text-center z-10 px-6">
           <h1
             className={`text-5xl md:text-7xl font-script text-foreground transition-all duration-1000 ${
@@ -226,6 +258,41 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                   className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
                 >
                   No 😢
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Question 3 - Below title */}
+          {step === "question3" && (
+            <div className="mt-12 animate-fade-in">
+              <p className="text-xl md:text-2xl font-script text-foreground mb-6">
+                Will you be mine forever? 💍✨
+              </p>
+              <div className="flex justify-center gap-6">
+                <button
+                  onClick={handleYesClick}
+                  className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
+                >
+                  Forever & Always! 💕
+                </button>
+                <button
+                  onMouseEnter={moveNoButton}
+                  onTouchStart={moveNoButton}
+                  onClick={moveNoButton}
+                  style={
+                    noButtonPosition.x !== 0 || noButtonPosition.y !== 0
+                      ? {
+                          position: "fixed",
+                          left: noButtonPosition.x,
+                          top: noButtonPosition.y,
+                          zIndex: 50,
+                        }
+                      : {}
+                  }
+                  className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
+                >
+                  Hmm... 🤔
                 </button>
               </div>
             </div>

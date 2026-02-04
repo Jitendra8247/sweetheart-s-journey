@@ -12,6 +12,10 @@ import { NumberGuessGame } from "./games/NumberGuessGame";
 import { ClickHeartGame } from "./games/ClickHeartGame";
 import { FindDifferenceGame } from "./games/FindDifferenceGame";
 import { CompleteHeartGame } from "./games/CompleteHeartGame";
+import { ConfettiOverlay } from "./ConfettiOverlay";
+import { HeartChallenge } from "./HeartChallenge";
+import { DodgingConfirmation } from "./DodgingConfirmation";
+import { LoveLoadingScreen } from "./LoveLoadingScreen";
 
 interface CheckpointProps {
   number: number;
@@ -60,6 +64,36 @@ export const Checkpoint = ({
   const [showGame, setShowGame] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showEnvelope, setShowEnvelope] = useState(false);
+  
+  // Frustrating challenge states
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [showHeartChallenge, setShowHeartChallenge] = useState(false);
+  const [showDodgingConfirm, setShowDodgingConfirm] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
+  const startChallengeSequence = () => {
+    // Different checkpoints have different challenge sequences
+    const challengeType = number % 3;
+    if (challengeType === 0) {
+      setShowConfetti(true);
+    } else if (challengeType === 1) {
+      setShowHeartChallenge(true);
+    } else {
+      setShowDodgingConfirm(true);
+    }
+  };
+
+  const handleChallengeComplete = () => {
+    setShowConfetti(false);
+    setShowHeartChallenge(false);
+    setShowDodgingConfirm(false);
+    setShowLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
+    setShowLoading(false);
+    setShowGame(true);
+  };
 
   const handleGameComplete = () => {
     setGameCompleted(true);
@@ -128,7 +162,39 @@ export const Checkpoint = ({
         )}
       </button>
 
-      {isSelected && isUnlocked && !isCompleted && !showEnvelope && (
+      {/* Challenge overlays */}
+      {showConfetti && (
+        <ConfettiOverlay 
+          onClear={handleChallengeComplete}
+          message={`Pop all the confetti for Checkpoint ${number}! 🎉`}
+        />
+      )}
+
+      {showHeartChallenge && (
+        <HeartChallenge 
+          onComplete={handleChallengeComplete}
+          requiredClicks={12 + number * 2}
+        />
+      )}
+
+      {showDodgingConfirm && (
+        <DodgingConfirmation
+          message={`Ready for Checkpoint ${number}?`}
+          onConfirm={handleChallengeComplete}
+          yesText="Let's go! 💖"
+          noText="Not yet..."
+        />
+      )}
+
+      {showLoading && (
+        <LoveLoadingScreen
+          onComplete={handleLoadingComplete}
+          message={`Preparing Checkpoint ${number}...`}
+          duration={2500}
+        />
+      )}
+
+      {isSelected && isUnlocked && !isCompleted && !showEnvelope && !showConfetti && !showHeartChallenge && !showDodgingConfirm && !showLoading && (
         <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
           <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full h-[92vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20 isolate">
             {!showGame && !gameCompleted && (
@@ -143,7 +209,7 @@ export const Checkpoint = ({
                   Game: {games[number - 1]?.name}
                 </p>
                 <button
-                  onClick={() => setShowGame(true)}
+                  onClick={startChallengeSequence}
                   className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-colors shadow-romantic"
                 >
                   Start Game 💕
