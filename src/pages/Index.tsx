@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Heart, Sparkles, Star } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 import { BurstEmoji } from "@/components/BurstEmoji";
 import { Diary } from "@/components/Diary";
 import { IntroSequence } from "@/components/IntroSequence";
+import { FloatingDistraction } from "@/components/FloatingDistraction";
+import { ConfettiOverlay } from "@/components/ConfettiOverlay";
 import birthdayCake from "@/assets/birthday-cake.png";
 import penguinBackground from "@/assets/penguin-background.jpg";
 
@@ -126,6 +128,15 @@ const Index = () => {
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
   const [showDiaryAuto, setShowDiaryAuto] = useState(false);
+  const [showWelcomeConfetti, setShowWelcomeConfetti] = useState(true);
+  const [distractionsActive, setDistractionsActive] = useState(false);
+
+  // Activate distractions after some checkpoints are completed
+  useEffect(() => {
+    if (completedCheckpoints.length >= 3) {
+      setDistractionsActive(true);
+    }
+  }, [completedCheckpoints]);
 
   const handleComplete = (checkpoint: number) => {
     if (!completedCheckpoints.includes(checkpoint)) {
@@ -158,6 +169,17 @@ const Index = () => {
     >
       {/* Global overlay for readability */}
       <div className="fixed inset-0 bg-background/40 backdrop-blur-[2px] pointer-events-none" />
+      
+      {/* Welcome confetti after intro */}
+      {showWelcomeConfetti && (
+        <ConfettiOverlay 
+          onClear={() => setShowWelcomeConfetti(false)}
+          message="Welcome! Pop all the confetti to start your journey! 🎉💕"
+        />
+      )}
+
+      {/* Floating distractions that appear after checkpoint 3 */}
+      <FloatingDistraction isActive={distractionsActive && !selectedCheckpoint} />
       
       {/* Hero Section - Full Page */}
       <HeroSection />
