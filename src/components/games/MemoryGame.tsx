@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Heart, Star, Moon, Sun, Flower2, Music } from "lucide-react";
+import { Bird, Feather, Egg, TreeDeciduous, Leaf, CloudSun } from "lucide-react";
 
 interface MemoryGameProps {
   onComplete: () => void;
 }
 
-const icons = [Heart, Star, Moon, Sun, Flower2, Music];
+// Different bird-themed icons for the memory game
+const icons = [Bird, Feather, Egg, TreeDeciduous, Leaf, CloudSun];
 
 interface Card {
   id: number;
