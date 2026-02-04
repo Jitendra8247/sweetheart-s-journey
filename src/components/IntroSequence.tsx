@@ -92,15 +92,15 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
           {showCatMessage && !catCaught && (
             <div className="absolute top-8 left-1/2 -translate-x-1/2 text-center animate-fade-in z-30">
               <h2 className="text-3xl md:text-5xl font-script text-foreground mb-2">
-                Catch the Cat! 🐱
+                Catch the Blue Bird! 🐦
               </h2>
               <p className="text-lg text-muted-foreground font-body">
-                Click on it before it runs away!
+                Click on it before it flies away!
               </p>
             </div>
           )}
 
-          {/* Running Cat */}
+          {/* Flying Blue Bird */}
           {!catCaught && (
             <button
               onClick={handleCatClick}
@@ -111,15 +111,15 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                 transform: "translate(-50%, -50%)",
               }}
             >
-              🐱
+              🐦
             </button>
           )}
 
-          {/* Cat caught celebration */}
+          {/* Bird caught celebration */}
           {catCaught && (
             <div className="absolute inset-0 flex items-center justify-center animate-scale-in">
               <div className="text-center">
-                <div className="text-8xl mb-4">🐱💕</div>
+                <div className="text-8xl mb-4">🐦💕</div>
                 <h2 className="text-3xl md:text-5xl font-script text-foreground">
                   You caught me!
                 </h2>
