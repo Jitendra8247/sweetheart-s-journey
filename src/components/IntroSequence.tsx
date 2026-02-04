@@ -104,7 +104,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
           {!catCaught && (
             <button
               onClick={handleCatClick}
-              className="absolute text-6xl md:text-8xl transition-all duration-300 hover:scale-125 cursor-pointer z-40"
+              className="absolute text-4xl md:text-5xl transition-all duration-300 hover:scale-125 cursor-pointer z-40"
               style={{
                 left: `${catPosition.x}%`,
                 top: `${catPosition.y}%`,
