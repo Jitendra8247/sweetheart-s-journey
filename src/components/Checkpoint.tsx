@@ -163,39 +163,43 @@ export const Checkpoint = ({
         )}
       </button>
 
-      {/* Challenge overlays */}
-      {showConfetti && (
+      {/* Portal all overlays to document.body to escape stacking contexts */}
+      {showConfetti && createPortal(
         <ConfettiOverlay 
           onClear={handleChallengeComplete}
           message={`Pop all the confetti for Checkpoint ${number}! 🎉`}
-        />
+        />,
+        document.body
       )}
 
-      {showHeartChallenge && (
+      {showHeartChallenge && createPortal(
         <HeartChallenge 
           onComplete={handleChallengeComplete}
           requiredClicks={12 + number * 2}
-        />
+        />,
+        document.body
       )}
 
-      {showDodgingConfirm && (
+      {showDodgingConfirm && createPortal(
         <DodgingConfirmation
           message={`Ready for Checkpoint ${number}?`}
           onConfirm={handleChallengeComplete}
           yesText="Let's go! 💖"
           noText="Not yet..."
-        />
+        />,
+        document.body
       )}
 
-      {showLoading && (
+      {showLoading && createPortal(
         <LoveLoadingScreen
           onComplete={handleLoadingComplete}
           message={`Preparing Checkpoint ${number}...`}
           duration={2500}
-        />
+        />,
+        document.body
       )}
 
-      {isSelected && isUnlocked && !isCompleted && !showEnvelope && !showConfetti && !showHeartChallenge && !showDodgingConfirm && !showLoading && (
+      {isSelected && isUnlocked && !isCompleted && !showEnvelope && !showConfetti && !showHeartChallenge && !showDodgingConfirm && !showLoading && createPortal(
         <div className="fixed inset-0 bg-foreground/80 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4">
           <div className="bg-background rounded-2xl p-4 sm:p-6 max-w-md w-full h-[92vh] max-h-[92vh] overflow-y-auto shadow-2xl relative z-[10000] flex flex-col border-2 border-primary/20 isolate">
             {!showGame && !gameCompleted && (
@@ -233,15 +237,17 @@ export const Checkpoint = ({
               </button>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {showEnvelope && (
+      {showEnvelope && createPortal(
         <Envelope
           message={checkpointMessages[number - 1]}
           checkpointNumber={number}
           onClose={handleEnvelopeClose}
-        />
+        />,
+        document.body
       )}
     </>
   );
