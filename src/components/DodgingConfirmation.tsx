@@ -11,8 +11,8 @@ interface DodgingConfirmationProps {
 export const DodgingConfirmation = ({ 
   message, 
   onConfirm, 
-  yesText = "Yes! 💖", 
-  noText = "Maybe later..." 
+  yesText = "YES", 
+  noText = "NO" 
 }: DodgingConfirmationProps) => {
   const [noPosition, setNoPosition] = useState({ x: 0, y: 0 });
   const [dodgeCount, setDodgeCount] = useState(0);

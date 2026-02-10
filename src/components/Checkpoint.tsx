@@ -184,7 +184,7 @@ export const Checkpoint = ({
         <DodgingConfirmation
           message={`Ready for Checkpoint ${number}?`}
           onConfirm={handleChallengeComplete}
-          yesText="Let's go! 💖"
+          yesText="Yes I am"
           noText="Not yet..."
         />,
         document.body
@@ -208,7 +208,7 @@ export const Checkpoint = ({
                   Checkpoint {number}
                 </h2>
                 <p className="text-muted-foreground font-body mb-6 text-lg">
-                  Complete the game to unlock your message!
+                  Complete The Every Point to See What I Made For You My Love!
                 </p>
                 <p className="text-primary font-body font-medium mb-8 text-xl">
                   Game: {games[number - 1]?.name}

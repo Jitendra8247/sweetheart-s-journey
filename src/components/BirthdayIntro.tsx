@@ -73,7 +73,7 @@ export const BirthdayIntro = ({ onShowDiary }: BirthdayIntroProps) => {
                 : 'translate-y-full opacity-0'
             }`}
           >
-            My Love
+            My Love 💕
           </h2>
         </div>
 

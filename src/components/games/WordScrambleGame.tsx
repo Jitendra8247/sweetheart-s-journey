@@ -6,11 +6,11 @@ interface WordScrambleGameProps {
 }
 
 const loveWords = [
-  { word: "LOVE", hint: "What I feel for you" },
+  { word: "LOVE", hint: "What I Do o You" },
   { word: "HEART", hint: "It beats for you" },
-  { word: "KISS", hint: "Sweet gesture 💋" },
-  { word: "HUG", hint: "Warm embrace" },
-  { word: "FOREVER", hint: "How long I'll love you" },
+  { word: "KISS", hint: "What I Always Want To Do" },
+  { word: "HUG", hint: "I want to do and hold you till i melt" },
+  { word: "FOREVER", hint: "How long will you be there in my heart" },
 ];
 
 export const WordScrambleGame = ({ onComplete }: WordScrambleGameProps) => {

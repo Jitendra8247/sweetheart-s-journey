@@ -60,12 +60,12 @@ export const FindDifferenceGame = ({ onComplete }: FindDifferenceGameProps) => {
 
       {found && (
         <p className="mt-6 text-lg font-script text-primary animate-fade-up">
-          You found it! The Sun shines differently! ☀️
+          You found it! YOU ARE MY SUNSHINE BABY!
         </p>
       )}
 
       <p className="mt-4 text-sm text-muted-foreground font-body italic">
-        Hint: Look for the one that glows differently
+        Hint: Its You For Me
       </p>
     </div>
   );

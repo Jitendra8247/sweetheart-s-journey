@@ -68,7 +68,7 @@ export const PuzzleGame = ({ onComplete }: PuzzleGameProps) => {
   return (
     <div className="text-center">
       <h2 className="text-3xl font-script text-foreground mb-2">Slide Puzzle</h2>
-      <p className="text-muted-foreground font-body mb-2">Arrange numbers 1-8 in order!</p>
+      <p className="text-muted-foreground font-body mb-2">Arrange numbers 1-8 in order if you can minus iq wali baby</p>
       <p className="text-sm text-primary font-body mb-6">Moves: {moves}</p>
 
       <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto">

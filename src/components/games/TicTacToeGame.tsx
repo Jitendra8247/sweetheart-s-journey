@@ -98,9 +98,9 @@ export const TicTacToeGame = ({ onComplete }: TicTacToeGameProps) => {
       {gameOver && (
         <div className="mb-4 p-3 rounded-xl bg-card border border-primary/20">
           <p className="font-script text-xl text-foreground">
-            {winner === "player" && "You won! Love conquers all! 💕"}
+            {winner === "player" && "You won! Chhoti bachhi💕"}
             {winner === "ai" && "AI won! Try again!"}
-            {winner === "tie" && "It's a tie! Love is complicated 💝"}
+            {winner === "tie" && "It's a tie!"}
           </p>
         </div>
       )}

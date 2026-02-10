@@ -106,7 +106,7 @@ export const HeartChallenge = ({ onComplete, requiredClicks = 20 }: HeartChallen
           <div className="text-center animate-scale-in">
             <div className="text-6xl mb-4">💖✨💖</div>
             <h2 className="text-3xl font-script text-foreground">
-              You're full of love!
+              Thats My Baby 💖
             </h2>
           </div>
         </div>

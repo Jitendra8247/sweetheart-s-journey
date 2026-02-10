@@ -204,7 +204,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                   onClick={handleYesClick}
                   className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
                 >
-                  Yes! 💖
+                  Yes 💖
                 </button>
                 <button
                   onMouseEnter={moveNoButton}
@@ -222,7 +222,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                   }
                   className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
                 >
-                  No 😢
+                  No
                 </button>
               </div>
             </div>
@@ -232,14 +232,14 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
           {step === "question2" && (
             <div className="mt-12 animate-fade-in">
               <p className="text-xl md:text-2xl font-script text-foreground mb-6">
-                Do you love me? 🥺💕
+                Do you love me?
               </p>
               <div className="flex justify-center gap-6">
                 <button
                   onClick={handleYesClick}
                   className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
                 >
-                  Yes, Always! 💖
+                  Yes, Always 💖
                 </button>
                 <button
                   onMouseEnter={moveNoButton}
@@ -257,7 +257,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                   }
                   className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
                 >
-                  No 😢
+                  No I don't
                 </button>
               </div>
             </div>
@@ -267,14 +267,14 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
           {step === "question3" && (
             <div className="mt-12 animate-fade-in">
               <p className="text-xl md:text-2xl font-script text-foreground mb-6">
-                Will you be mine forever? 💍✨
+                Will you be mine forever? 💍
               </p>
               <div className="flex justify-center gap-6">
                 <button
                   onClick={handleYesClick}
                   className="px-10 py-4 bg-primary text-primary-foreground rounded-full font-body font-semibold text-lg hover:bg-rose-dark transition-all hover:scale-105 shadow-romantic"
                 >
-                  Forever & Always! 💕
+                  Forever & Always 💕
                 </button>
                 <button
                   onMouseEnter={moveNoButton}
@@ -292,7 +292,7 @@ export const IntroSequence = ({ onComplete }: IntroSequenceProps) => {
                   }
                   className="px-10 py-4 bg-muted text-muted-foreground rounded-full font-body font-semibold text-lg hover:bg-muted/80 transition-all shadow-md"
                 >
-                  Hmm... 🤔
+                  No Never
                 </button>
               </div>
             </div>

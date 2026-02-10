@@ -1,13 +1,25 @@
 import { useState, useEffect } from "react";
 import { Lock, ChevronLeft, ChevronRight, Heart, BookOpen } from "lucide-react";
 
+// Import memory photos
+import memory1 from "@/assets/memory-1.jpg";
+
 interface DiaryProps {
   onUnlock: () => void;
   isUnlocked?: boolean;
 }
 
+// Helper function to get photo import or null
+const getPhotoSrc = (photoNum: number): string | null => {
+  const photoMap: { [key: number]: string } = {
+    1: memory1,
+    // Add more as you upload: 2: memory2, 3: memory3, etc.
+  };
+  return photoMap[photoNum] || null;
+};
+
 const diaryPages = [
-  { quote: "The day we met, my heart knew it was home.", photo: 1 },
+  { quote: "The day we met, my heart knew it was home The day we met, my heart knew it was home The day we met, my heart knew it was home The day we met, my heart knew it was home.", photo: 1 },
   { quote: "Your smile is my favorite view in the world.", photo: 2 },
   { quote: "Every moment with you feels like magic.", photo: 3 },
   { quote: "You're my today and all of my tomorrows.", photo: 4 },
@@ -131,10 +143,10 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
             <div className="relative z-10 h-full flex flex-col items-center justify-center px-8">
               <BookOpen className="text-amber-400/80 mb-4 drop-shadow-lg" size={56} />
               <h2 className="text-4xl font-script text-amber-100 mb-2 drop-shadow-lg">
-                Our Love Story
+                This Is For You My Love 💕
               </h2>
               <p className="text-amber-200/70 text-sm font-body mb-10">
-                A diary of us 💕
+                A World Where Live Only Us And No Other Soul
               </p>
 
               {/* Golden lock */}
@@ -152,7 +164,8 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
 
         <div className="mt-8">
           <p className="text-muted-foreground font-body mb-2 italic">
-            Hint: Do you still remember the date?
+            Hint: Do you still remember the date? The date wherea all the memories hold where everything has started.
+            if you still cant find the password then hear Heat Waves Song You'll Remember it then.
           </p>
           <p className="text-xs text-muted-foreground font-body mb-4">
             (Format: DDMMYYYY)
@@ -170,7 +183,7 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
               type="submit"
               className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-full font-body font-medium hover:bg-rose-dark transition-colors shadow-romantic"
             >
-              Unlock Our Story 🔓
+              See What is Inside for You.
             </button>
           </form>
         </div>
@@ -183,7 +196,7 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
   return (
     <div className="text-center">
       <h2 className="text-3xl font-script text-foreground mb-6">
-        Our Love Story 💕
+        Our World Where We Blongs To 💕
       </h2>
 
       {/* Open Diary with page turn effect - horizontal layout on all screens */}
@@ -235,17 +248,25 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
                 {currentPage * 2 + 2}
               </div>
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center">
-                <div className="w-28 xs:w-36 sm:w-48 md:w-56 h-32 xs:h-40 sm:h-48 md:h-64 bg-amber-200/50 rounded-lg border-4 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
-                  <div className="text-center">
-                    <Heart className="text-primary/40 mx-auto mb-1 sm:mb-2" size={20} fill="currentColor" />
-                    <p className="text-xs sm:text-base text-amber-700/70 font-body">
-                      Photo {page.photo}
-                    </p>
-                    <p className="text-xs text-amber-600/60 font-body mt-1 hidden xs:block">
-                      Add your photo 📸
-                    </p>
-                  </div>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-1">
+                <div className="w-full h-full bg-amber-200/50 rounded-lg border-2 border-amber-300/40 flex items-center justify-center relative overflow-hidden shadow-inner">
+                  {getPhotoSrc(page.photo) ? (
+                    <img 
+                      src={getPhotoSrc(page.photo)!} 
+                      alt={`Memory ${page.photo}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <Heart className="text-primary/40 mx-auto mb-1 sm:mb-2" size={20} fill="currentColor" />
+                      <p className="text-xs sm:text-base text-amber-700/70 font-body">
+                        Photo {page.photo}
+                      </p>
+                      <p className="text-xs text-amber-600/60 font-body mt-1 hidden xs:block">
+                        Add your photo 📸
+                      </p>
+                    </div>
+                  )}
                   {/* Tape corners */}
                   <div className="absolute -top-2 -left-2 w-6 sm:w-10 h-3 sm:h-5 bg-amber-100/90 rotate-[-30deg] shadow-sm" />
                   <div className="absolute -top-2 -right-2 w-6 sm:w-10 h-3 sm:h-5 bg-amber-100/90 rotate-[30deg] shadow-sm" />
@@ -292,7 +313,8 @@ export const Diary = ({ onUnlock, isUnlocked = false }: DiaryProps) => {
 
         {currentPage === diaryPages.length - 1 && (
           <p className="mt-6 text-lg font-script text-primary animate-fade-up">
-            Thank you for completing our journey! 💝
+            So Thats it and Happy Birthday My Baby 💕
+            Thank You For Reading I LOVE YOU 💕
           </p>
         )}
       </div>

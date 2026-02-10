@@ -8,13 +8,13 @@ interface ClickHeartGameProps {
 const loveMessages = [
   "I LOVE YOU",
   "HAPPY BIRTHDAY",
-  "LOVE",
+  "MY PAGAL",
   "I LOVE U DARLING",
-  "MY LOVE",
-  "YOU'RE THE BEST",
-  "FOREVER YOURS",
-  "MY HEART",
-  "BEAUTIFUL",
+  "MY CHHOTI BACHHI",
+  "YOU'RE MY ONLY ONE",
+  "MY CUTE CAT",
+  "MY HEARTBEAT",
+  "MOST BEAUTIFUL PRINCESS",
   "MY BABY",
 ];
 
@@ -91,7 +91,7 @@ export const ClickHeartGame = ({ onComplete }: ClickHeartGameProps) => {
       </div>
 
       <p className="mt-6 text-sm text-muted-foreground font-body italic">
-        Every click is a kiss! 💋
+        Every click is a kiss You Will Owe Me
       </p>
     </div>
   );

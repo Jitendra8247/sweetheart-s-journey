@@ -7,17 +7,17 @@ interface LoveQuizGameProps {
 
 const questions = [
   {
-    question: "What does 'Te Amo' mean?",
+    question: "What does 'Aishiteru' Mean?",
     options: ["I hate you", "I love you", "Goodbye", "Hello"],
     correct: 1,
   },
   {
-    question: "Which flower symbolizes love?",
+    question: "Which flower I Gave You Today?",
     options: ["Sunflower", "Daisy", "Rose", "Tulip"],
     correct: 2,
   },
   {
-    question: "What color represents love?",
+    question: "What Color Represents Love?",
     options: ["Blue", "Green", "Red", "Yellow"],
     correct: 2,
   },
@@ -64,7 +64,7 @@ export const LoveQuizGame = ({ onComplete }: LoveQuizGameProps) => {
     return (
       <div className="text-center">
         <h2 className="text-3xl font-script text-foreground mb-4">
-          {passed ? "You're a Love Expert!" : "Keep Learning About Love!"}
+          {passed ? "You Know Everything My Baby" : "Keep Learning Chhoti Bachhi Galat Jawab"}
         </h2>
         <p className="text-xl text-primary font-body mb-4">
           Score: {score}/{questions.length}
