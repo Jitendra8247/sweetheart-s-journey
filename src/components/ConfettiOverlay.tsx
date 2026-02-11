@@ -17,7 +17,7 @@ export const ConfettiOverlay = ({ onClear, message = "Pop all the confetti to co
     const pieces = Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 80 + 10,
-      y: Math.random() * 70 + 15,
+      y: Math.random() * 60 + 25, // Start from 25% down to avoid message area
       emoji: confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)],
       popped: false,
     }));
