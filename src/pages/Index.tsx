@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heart, Sparkles, Star } from "lucide-react";
+import { Heart, Sparkles } from "lucide-react";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Checkpoint } from "@/components/Checkpoint";
 import { BurstEmoji } from "@/components/BurstEmoji";
@@ -7,6 +7,7 @@ import { Diary } from "@/components/Diary";
 import { IntroSequence } from "@/components/IntroSequence";
 import { FloatingDistraction } from "@/components/FloatingDistraction";
 import { ConfettiOverlay } from "@/components/ConfettiOverlay";
+import { PasswordGate } from "@/components/PasswordGate";
 import birthdayCake from "@/assets/birthday-cake.png";
 import penguinBackground from "@/assets/penguin-background.jpg";
 
@@ -133,6 +134,7 @@ const HeroSection = () => (
 );
 
 const Index = () => {
+  const [passwordUnlocked, setPasswordUnlocked] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [completedCheckpoints, setCompletedCheckpoints] = useState<number[]>([]);
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<number | null>(null);
@@ -160,7 +162,12 @@ const Index = () => {
     return completedCheckpoints.includes(checkpoint - 1);
   };
 
-  // Show intro sequence first
+  // Show password gate first
+  if (!passwordUnlocked) {
+    return <PasswordGate onUnlock={() => setPasswordUnlocked(true)} />;
+  }
+
+  // Show intro sequence after password
   if (!introComplete) {
     return <IntroSequence onComplete={() => setIntroComplete(true)} />;
   }

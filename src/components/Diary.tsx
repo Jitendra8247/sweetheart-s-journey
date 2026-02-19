@@ -3,6 +3,19 @@ import { Lock, ChevronLeft, ChevronRight, Heart, BookOpen } from "lucide-react";
 
 // Import memory photos
 import memory1 from "@/assets/memory-1.jpg";
+import memory2 from "@/assets/memory-2.jpg";
+import memory3 from "@/assets/memory-3.jpg";
+import memory4 from "@/assets/memory-4.jpg";
+import memory5 from "@/assets/memory-5.jpg";
+import memory6 from "@/assets/memory-6.jpg";
+import memory7 from "@/assets/memory-7.jpg";
+import memory8 from "@/assets/memory-8.jpg";
+import memory9 from "@/assets/memory-9.jpg";
+import memory18 from "@/assets/memory-18.jpg";
+import memory19 from "@/assets/memory-19.jpg";
+import memory20 from "@/assets/memory-20.jpg";
+import memory21 from "@/assets/memory-21.jpg";
+import memory22 from "@/assets/memory-22.jpg";
 
 interface DiaryProps {
   onUnlock: () => void;
@@ -13,7 +26,19 @@ interface DiaryProps {
 const getPhotoSrc = (photoNum: number): string | null => {
   const photoMap: { [key: number]: string } = {
     1: memory1,
-    // Add more as you upload: 2: memory2, 3: memory3, etc.
+    2: memory2,
+    3: memory3,
+    4: memory4,
+    5: memory5,
+    6: memory6,
+    7: memory7,
+    8: memory8,
+    9: memory9,
+    18: memory18,
+    19: memory19,
+    20: memory20,
+    21: memory21,
+    22: memory22,
   };
   return photoMap[photoNum] || null;
 };
