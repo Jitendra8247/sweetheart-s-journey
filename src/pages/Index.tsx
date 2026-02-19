@@ -12,63 +12,72 @@ import penguinBackground from "@/assets/penguin-background.jpg";
 
 // Interactive emojis with burst effect - reduced count
 const interactiveEmojis: { type: "heart" | "star" | "balloon" | "rose"; top: string; left?: string; right?: string }[] = [
-  { type: "rose", top: "8%", left: "8%" },
-  { type: "heart", top: "20%", right: "10%" },
-  { type: "balloon", top: "35%", left: "5%" },
-  { type: "star", top: "50%", right: "8%" },
-  { type: "heart", top: "65%", left: "10%" },
+  { type: "rose", top: "6%", left: "25%" },
+  { type: "heart", top: "18%", right: "10%" },
+  { type: "balloon", top: "30%", left: "40%" },
+  { type: "star", top: "42%", right: "12%" },
+  { type: "heart", top: "65%", left: "35%" },
   { type: "rose", top: "80%", right: "12%" },
 ];
 
 // Checkpoint positions for the winding path (percentages)
 const checkpointPositions = [
   { top: "12%", left: "15%" },    // 1
-  { top: "14%", left: "40%" },    // 2
+  { top: "15%", left: "48%" },    // 2
   { top: "22%", right: "12%" },   // 3
-  { top: "32%", left: "45%" },    // 4
+  { top: "32%", left: "60%" },    // 4
   { top: "38%", left: "18%" },    // 5
   { top: "50%", left: "35%" },    // 6
-  { top: "48%", right: "15%" },   // 7
-  { top: "62%", right: "10%" },   // 8
-  { top: "75%", left: "30%" },    // 9
+  { top: "52%", right: "8%" },   // 7
+  { top: "65%", right: "15%" },   // 8
+  { top: "75%", left: "35%" },    // 9
   { top: "88%", left: "35%" },    // 10
 ];
 
-// SVG path connecting checkpoints
-const PathLine = ({ completed }: { completed: number }) => (
-  <svg 
-    className="absolute inset-0 w-full h-full pointer-events-none z-0"
-    viewBox="0 0 100 100"
-    preserveAspectRatio="none"
-  >
-    <defs>
-      <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="hsl(var(--primary))" />
-        <stop offset="100%" stopColor="hsl(var(--coral))" />
-      </linearGradient>
-    </defs>
-    {/* Background path */}
-    <path
-      d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
-      fill="none"
-      stroke="hsl(var(--muted))"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-      className="transition-all duration-500"
-    />
-    {/* Completed path overlay */}
-    <path
-      d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
-      fill="none"
-      stroke="url(#pathGradient)"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-      strokeDasharray="300"
-      strokeDashoffset={300 - (completed * 30)}
-      className="transition-all duration-1000"
-    />
-  </svg>
-);
+// SVG path connecting stages - custom progress map for visual accuracy
+const TOTAL_LENGTH = 300;
+const progressMap = [0, 35, 65, 90, 135, 172, 220, 235, 275, 300, 300];
+
+const PathLine = ({ completed }: { completed: number }) => {
+  // Clamp completed value to valid array indices
+  const clampedCompleted = Math.max(0, Math.min(completed, progressMap.length - 1));
+  const progressOffset = TOTAL_LENGTH - progressMap[clampedCompleted];
+
+  return (
+    <svg 
+      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(var(--primary))" />
+          <stop offset="100%" stopColor="hsl(var(--coral))" />
+        </linearGradient>
+      </defs>
+      {/* Background path */}
+      <path
+        d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
+        fill="none"
+        stroke="hsl(var(--muted))"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        className="transition-all duration-500"
+      />
+      {/* Completed path overlay */}
+      <path
+        d="M 18 14 L 42 15 Q 55 15 60 18 L 82 24 Q 88 28 85 32 L 55 34 Q 45 35 35 38 L 22 40 Q 15 42 18 48 L 38 52 Q 50 52 60 50 L 80 50 Q 90 52 88 58 L 85 64 Q 82 68 70 72 L 45 76 Q 35 78 38 85 L 40 90"
+        fill="none"
+        stroke="url(#pathGradient)"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeDasharray={TOTAL_LENGTH}
+        strokeDashoffset={progressOffset}
+        className="transition-all duration-1000"
+      />
+    </svg>
+  );
+};
 
 // Hero section with birthday message
 const HeroSection = () => (
@@ -110,7 +119,7 @@ const HeroSection = () => (
         Wishing you the most magical day ever! 🎉
       </p>
       <p className="text-base text-foreground/80 font-body mb-8 max-w-md mx-auto drop-shadow">
-        Scroll down to explore our love journey with 10 special checkpoints 💕
+        Scroll down to explore our love journey with 10 special stages 💕
       </p>
     </div>
     
@@ -131,7 +140,7 @@ const Index = () => {
   const [showWelcomeConfetti, setShowWelcomeConfetti] = useState(true);
   const [distractionsActive, setDistractionsActive] = useState(false);
 
-  // Activate distractions after some checkpoints are completed
+  // Activate distractions after some stages are completed
   useEffect(() => {
     if (completedCheckpoints.length >= 3) {
       setDistractionsActive(true);
@@ -178,21 +187,21 @@ const Index = () => {
         />
       )}
 
-      {/* Floating distractions that appear after checkpoint 3 */}
+      {/* Floating distractions that appear after stage 3 */}
       <FloatingDistraction isActive={distractionsActive && !selectedCheckpoint} />
       
       {/* Hero Section - Full Page */}
       <HeroSection />
       
-      {/* Checkpoints Section */}
-      <div id="checkpoints-section" className="min-h-screen relative pt-8">
+      {/* Stages Section */}
+      <div id="stages-section" className="min-h-screen relative pt-8">
         {/* Section Header */}
         <div className="text-center py-8 relative z-20">
           <h2 className="text-3xl md:text-4xl font-script text-foreground mb-2">
             Our Love Journey
           </h2>
           <p className="text-lg text-muted-foreground font-body">
-            Complete each checkpoint to unlock the next 💕
+            Complete each stage to unlock the next 💕
           </p>
           <p className="text-sm text-primary font-body mt-2">
             Progress: {completedCheckpoints.length}/10
@@ -218,7 +227,7 @@ const Index = () => {
             />
           ))}
 
-          {/* Checkpoints */}
+          {/* Stages */}
           {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
             <div
               key={num}
@@ -242,7 +251,7 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Auto-show Diary when all 9 checkpoints are complete */}
+      {/* Auto-show Diary when all 9 stages are complete */}
       {showDiaryAuto && (
         <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
           <div className="bg-background rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-romantic relative z-[101]">

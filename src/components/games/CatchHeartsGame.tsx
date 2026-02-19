@@ -15,10 +15,12 @@ export const CatchHeartsGame = ({ onComplete }: CatchHeartsGameProps) => {
   const [hearts, setHearts] = useState<FallingHeart[]>([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
-  const target = 10;
+  const [gameOver, setGameOver] = useState(false);
+  const target = 22;
 
   useEffect(() => {
     if (timeLeft <= 0) {
+      setGameOver(true);
       if (score >= target) {
         onComplete();
       }
@@ -33,6 +35,8 @@ export const CatchHeartsGame = ({ onComplete }: CatchHeartsGameProps) => {
   }, [timeLeft, score, onComplete]);
 
   useEffect(() => {
+    if (gameOver) return;
+    
     const spawnInterval = setInterval(() => {
       if (timeLeft > 0) {
         const newHeart: FallingHeart = {
@@ -42,53 +46,64 @@ export const CatchHeartsGame = ({ onComplete }: CatchHeartsGameProps) => {
         };
         setHearts(prev => [...prev, newHeart]);
       }
-    }, 800);
+    }, 600); // Faster spawn rate
 
     return () => clearInterval(spawnInterval);
-  }, [timeLeft]);
+  }, [timeLeft, gameOver]);
 
   useEffect(() => {
+    if (gameOver) return;
+    
     const moveInterval = setInterval(() => {
       setHearts(prev => 
         prev
-          .map(heart => ({ ...heart, y: heart.y + 3 }))
+          .map(heart => ({ ...heart, y: heart.y + 5 })) // Faster falling speed (was 3)
           .filter(heart => heart.y < 100)
       );
     }, 50);
 
     return () => clearInterval(moveInterval);
-  }, []);
+  }, [gameOver]);
 
   const catchHeart = useCallback((id: number) => {
+    if (gameOver) return;
+    
     setHearts(prev => prev.filter(h => h.id !== id));
     setScore(s => {
       const newScore = s + 1;
       if (newScore >= target) {
+        setGameOver(true);
         setTimeout(onComplete, 300);
       }
       return newScore;
     });
-  }, [onComplete]);
+  }, [onComplete, gameOver]);
 
   const restart = () => {
     setHearts([]);
     setScore(0);
     setTimeLeft(15);
+    setGameOver(false);
   };
 
-  if (timeLeft <= 0 && score < target) {
+  if (gameOver && score < target) {
     return (
       <div className="text-center">
-        <h2 className="text-3xl font-script text-foreground mb-4">Time's Up!</h2>
-        <p className="text-muted-foreground font-body mb-6">
-          You caught {score}/{target} hearts. Try again!
-        </p>
-        <button
-          onClick={restart}
-          className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-body font-medium hover:bg-rose-dark transition-colors"
-        >
-          Try Again
-        </button>
+        <div className="mb-6 bg-red-50 border-2 border-red-300 rounded-xl p-6 animate-fade-up">
+          <h2 className="text-3xl font-script text-red-600 mb-3">Time's Up!</h2>
+          <p className="text-xl font-script text-red-500 mb-4">
+            Chhoti Bachhi hi ho tum to 😄
+          </p>
+          <p className="text-muted-foreground font-body mb-6">
+            You caught {score}/{target} hearts
+          </p>
+          <button
+            onClick={restart}
+            className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-body font-medium hover:bg-rose-dark transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
@@ -96,10 +111,12 @@ export const CatchHeartsGame = ({ onComplete }: CatchHeartsGameProps) => {
   return (
     <div className="text-center">
       <h2 className="text-3xl font-script text-foreground mb-2">Catch the Hearts!</h2>
-      <p className="text-muted-foreground font-body mb-2">Tap the falling hearts!</p>
+      <p className="text-muted-foreground font-body mb-2">Tap the falling hearts quickly!</p>
       <div className="flex justify-center gap-6 mb-4">
         <span className="text-primary font-body font-semibold">Score: {score}/{target}</span>
-        <span className="text-coral font-body font-semibold">Time: {timeLeft}s</span>
+        <span className={`font-body font-semibold ${timeLeft <= 3 ? 'text-red-500 animate-pulse' : 'text-coral'}`}>
+          Time: {timeLeft}s
+        </span>
       </div>
       
       <div className="relative w-full h-64 bg-card/50 rounded-2xl overflow-hidden border-2 border-primary/20">

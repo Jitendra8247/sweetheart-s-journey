@@ -27,7 +27,7 @@ interface CheckpointProps {
   isSelected: boolean;
 }
 
-const checkpointMessages = [
+const stageMessages = [
   "You are the reason my heart beats faster every day.",
   "With you, every moment becomes a beautiful memory.",
   "Your love is the greatest gift I've ever received.",
@@ -73,7 +73,7 @@ export const Checkpoint = ({
   const [showLoading, setShowLoading] = useState(false);
 
   const startChallengeSequence = () => {
-    // Different checkpoints have different challenge sequences
+    // Different stages have different challenge sequences
     const challengeType = number % 3;
     if (challengeType === 0) {
       setShowConfetti(true);
@@ -109,7 +109,7 @@ export const Checkpoint = ({
 
   const GameComponent = games[number - 1]?.component;
 
-  // Stone-like checkpoint styling
+  // Stone-like stage styling
   const stoneStyles = `
     relative flex items-center justify-center
     transition-all duration-300 transform cursor-pointer
@@ -118,7 +118,7 @@ export const Checkpoint = ({
     font-script text-2xl md:text-3xl text-foreground
   `;
 
-  // Checkpoint 10 is special - navigates to birthday page
+  // Stage 10 is special - navigates to birthday page
   if (number === 10) {
     return (
       <button
@@ -167,7 +167,7 @@ export const Checkpoint = ({
       {showConfetti && createPortal(
         <ConfettiOverlay 
           onClear={handleChallengeComplete}
-          message={`Pop all the confetti for Checkpoint ${number}! 🎉`}
+          message={`Pop all the confetti for Stage ${number}! 🎉`}
         />,
         document.body
       )}
@@ -182,7 +182,7 @@ export const Checkpoint = ({
 
       {showDodgingConfirm && createPortal(
         <DodgingConfirmation
-          message={`Ready for Checkpoint ${number}?`}
+          message={`Ready for Stage ${number}?`}
           onConfirm={handleChallengeComplete}
           yesText="Yes I am"
           noText="Not yet..."
@@ -193,7 +193,7 @@ export const Checkpoint = ({
       {showLoading && createPortal(
         <LoveLoadingScreen
           onComplete={handleLoadingComplete}
-          message={`Preparing Checkpoint ${number}...`}
+          message={`Preparing Stage ${number}...`}
           duration={2500}
         />,
         document.body
@@ -205,7 +205,7 @@ export const Checkpoint = ({
             {!showGame && !gameCompleted && (
               <div className="text-center flex-1 flex flex-col justify-center py-8">
                 <h2 className="text-3xl font-script text-foreground mb-4">
-                  Checkpoint {number}
+                  Stage {number}
                 </h2>
                 <p className="text-muted-foreground font-body mb-6 text-lg">
                   Complete The Every Point to See What I Made For You My Love!
@@ -243,7 +243,7 @@ export const Checkpoint = ({
 
       {showEnvelope && createPortal(
         <Envelope
-          message={checkpointMessages[number - 1]}
+          message={stageMessages[number - 1]}
           checkpointNumber={number}
           onClose={handleEnvelopeClose}
         />,
